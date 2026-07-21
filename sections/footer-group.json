@@ -88,7 +88,8 @@
             "title": "",
             "title_url": "",
             "menu_link_opacity": 100,
-            "show_first_menu_on_mobile": false
+            "show_first_menu_on_mobile": false,
+            "hide_on_mobile": true
           }
         },
         "link_list_VQar7M": {
@@ -101,7 +102,8 @@
             "title": "",
             "title_url": "",
             "menu_link_opacity": 100,
-            "show_first_menu_on_mobile": true
+            "show_first_menu_on_mobile": true,
+            "hide_on_mobile": false
           }
         },
         "link_list_yykxXc": {
@@ -114,7 +116,8 @@
             "title": "",
             "title_url": "",
             "menu_link_opacity": 100,
-            "show_first_menu_on_mobile": true
+            "show_first_menu_on_mobile": true,
+            "hide_on_mobile": false
           }
         },
         "link_list_pmQdVJ": {
@@ -127,7 +130,8 @@
             "title": "",
             "title_url": "",
             "menu_link_opacity": 100,
-            "show_first_menu_on_mobile": true
+            "show_first_menu_on_mobile": true,
+            "hide_on_mobile": false
           }
         },
         "link_list_fpjyWg": {
@@ -140,7 +144,8 @@
             "title": "",
             "title_url": "",
             "menu_link_opacity": 100,
-            "show_first_menu_on_mobile": true
+            "show_first_menu_on_mobile": true,
+            "hide_on_mobile": false
           }
         }
       },
