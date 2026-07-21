@@ -69,7 +69,7 @@
                   {%- endfor -%}
                 </ul>
               {%- endcapture -%}
-              <div class="section-footer__content footer__nav--{{ block.settings.menu_layout }}">
+              <div class="section-footer__content footer__nav--{{ block.settings.menu_layout }}{% if block.settings.hide_on_mobile %} small-hide medium-hide{% endif %}">
                 <div class="footer__nav-desktop small-hide medium-hide">
                   <h4 class="footer__block-heading">
                     {%- if block.settings.title_url != blank -%}
@@ -626,6 +626,12 @@
           "id": "show_first_menu_on_mobile",
           "label": "t:sections.footer.blocks.link_list.settings.show_first_menu_on_mobile.label",
           "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_mobile",
+          "label": "Hide on mobile (desktop only)",
+          "default": false
         }
       ]
     },

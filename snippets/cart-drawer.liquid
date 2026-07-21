@@ -141,8 +141,10 @@
                       {%- endif -%}
                       <div class="cart-drawer__action-buttons">
                         {%- liquid
-                          render 'button', type: 'link', button_style: 'button--outlined', value: 'cart.view_cart' | t, href: routes.cart_url, fullwidth: true, class: 'button'
-                          render 'button', type: 'submit', name: 'checkout', value: 'cart.checkout' | t, style: 'solid', fullwidth: true, class: 'button'
+                          assign view_cart_text = 'cart.view_cart' | t
+                          assign checkout_text = 'cart.checkout' | t
+                          render 'button', type: 'link', button_style: 'button--outlined', value: view_cart_text, href: routes.cart_url, fullwidth: true, class: 'button'
+                          render 'button', type: 'submit', name: 'checkout', value: checkout_text, style: 'solid', fullwidth: true, class: 'button'
                         -%}
                       </div>
                     </div>
