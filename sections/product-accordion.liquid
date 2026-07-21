@@ -1,0 +1,159 @@
+{% stylesheet %}
+.right-accordion-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 0;
+  
+    max-width: 1600px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.right-accordion {
+    width: 48%;
+    padding-right: 82px;
+}
+
+.accordion-item {
+  border-bottom: 1px dashed #ccc;
+  border-bottom-style: dashed;
+  border-bottom-width: 2px;
+}
+
+
+.accordion-toggle {
+  width: 100%;
+  padding: 1rem 0;
+  background: none;
+  border: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.accordion-title {
+  
+  font-weight: 500;
+  color: #2A2A2A;
+  font-size: 18px;
+}
+
+.accordion-icon {
+  font-size: 25px;
+  font-weight: 400;
+  color: #2A2A2A;
+  transition: transform 0.2s ease;
+}
+
+.accordion-content {
+  display: none;
+  padding: 0 0 1rem 0;
+  font-size: 18px;
+}
+
+.accordion-item.active .accordion-content {
+  display: block;
+}
+  /* ✅ Mobile-specific adjustments */
+@media (max-width: 768px) {
+  .right-accordion {
+    width: 100%;
+    padding-right: 10px;
+      padding-left: 10px;
+
+  }
+
+  .right-accordion-container {
+    justify-content: center;
+    padding: 1rem;
+  }
+}
+{% endstylesheet %}
+
+<div class="right-accordion-container">
+  <div class="right-accordion">
+    <!-- Product Info -->
+    <div class="accordion-item">
+      <button class="accordion-toggle">
+        <span class="accordion-title">Product Info</span>
+        <span class="accordion-icon">+</span>
+      </button>
+      <div class="accordion-content">
+        {{ product.description }}
+      </div>
+    </div>
+
+    <!-- Key Ingredients -->
+<div class="accordion-item">
+  <button class="accordion-toggle">
+    <span class="accordion-title">Key Ingredients</span>
+    <span class="accordion-icon">+</span>
+  </button>
+  <div class="accordion-content">
+    {{ product.metafields.custom.key_ingredients | metafield_tag }}
+  </div>
+</div>
+
+
+    <!-- Delivery Info -->
+    <div class="accordion-item">
+      <button class="accordion-toggle">
+        <span class="accordion-title">Delivery Info</span>
+        <span class="accordion-icon">+</span>
+      </button>
+      <div class="accordion-content">
+        {{ section.settings.delivery_info }}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% javascript %}
+document.addEventListener("DOMContentLoaded", function () {
+  const items = document.querySelectorAll(".right-accordion .accordion-item");
+  items.forEach((item) => {
+    const toggle = item.querySelector(".accordion-toggle");
+    const icon = item.querySelector(".accordion-icon");
+    toggle.addEventListener("click", () => {
+      const isActive = item.classList.contains("active");
+      items.forEach(i => {
+        i.classList.remove("active");
+        i.querySelector(".accordion-icon").textContent = "+";
+      });
+      if (!isActive) {
+        item.classList.add("active");
+        icon.textContent = "–";
+      }
+    });
+  });
+});
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Right-Aligned Accordion",
+  "settings": [
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading Font Size (px)",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "textarea",
+      "id": "delivery_info",
+      "label": "Delivery Info",
+      "default": "Delivered in 3–5 working days. Free shipping available."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Right-Aligned Accordion"
+    }
+  ]
+}
+{% endschema %}

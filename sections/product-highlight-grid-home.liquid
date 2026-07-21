@@ -1,0 +1,175 @@
+{% schema %}
+  {
+    "name": "Product Highlight Grid",
+    "settings": [
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background color",
+        "default": "#ffffff"
+      }, {
+        "type": "range",
+        "id": "spacing_top",
+        "label": "Padding Top (px)",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 20
+      }, {
+        "type": "range",
+        "id": "spacing_bottom",
+        "label": "Padding Bottom (px)",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 20
+      }
+    ],
+    "blocks": [
+      {
+        "type": "product",
+        "name": "Product Card",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "card_image",
+            "label": "Card Image"
+          }, {
+            "type": "url",
+            "id": "card_link",
+            "label": "Card Link"
+          },
+          {
+            "type": "text",
+            "id": "card_tag",
+            "label": "Tag Text",
+            "default": "BEST SELLER"
+          },
+          {
+            "type": "color",
+            "id": "tag_bg_color",
+            "label": "Tag Background Color",
+            "default": "#333333"
+          },
+          {
+            "type": "color",
+            "id": "tag_text_color",
+            "label": "Tag Text Color",
+            "default": "#ffffff"
+          }
+        ]
+      }
+    ],
+    "max_blocks": 2,
+    "presets": [
+      {
+        "name": "Product Highlight Grid",
+        "blocks": [
+          {
+            "type": "product"
+          }, {
+            "type": "product"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+{% if section.blocks.size > 0 %}
+  <style>
+    #shopify-section-{{ section.id }} .product-highlight-section {
+      padding-top: {{ section.settings.spacing_top }}px;
+      padding-bottom: {{ section.settings.spacing_bottom }}px;
+      background-color: {{ section.settings.background_color }};
+      max-width: var(--max-width);
+      margin-inline: auto;
+    }
+
+    .highlight-container {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      flex-wrap: wrap;
+
+    }
+
+    .product-card {
+      display: block;
+      position: relative;
+      flex: 1 1 calc(50% - 20px);
+      /* Two cards side by side */
+      {% comment %} max-width: 700px;
+    {% endcomment %}
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+
+  .product-card:hover {
+    transform: scale(1.03);
+  }
+
+  .product-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+  }
+
+  /* Stack cards only below 1200px */
+  @media (max-width: 1000px) {
+    .highlight-container {
+      padding: 20px;
+
+    }
+    .product-card {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
+  }
+  @media (max-width: 768px) {
+    .highlight-container {
+      padding: 20px 16px !important;
+    }
+  }
+
+  .product-card-tag {
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 4px;
+    z-index: 2;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  </style>
+
+  <section class="product-highlight-section">
+    <div class="highlight-container">
+      {% for block in section.blocks %}
+        {% if block.settings.card_image != blank %}
+          <a
+            href="{{ block.settings.card_link }}"
+            class="product-card"
+            style="aspect-ratio: {{ block.settings.card_image.width }}/{{ block.settings.card_image.height }} ">
+            {% if block.settings.card_tag != blank %}
+              <span class="product-card-tag" style="background-color: {{ block.settings.tag_bg_color }}; color: {{ block.settings.tag_text_color }};">
+                {{ block.settings.card_tag }}
+              </span>
+            {% endif %}
+            <img
+              src="{{ block.settings.card_image | image_url: width: 800 }}"
+              loading="lazy"
+              width="{{ block.settings.card_image.width }}"
+              height="{{ block.settings.card_image.height }}"
+              decoding="async"
+              alt="{{ block.settings.card_image.alt | default: 'Product Image' }}">
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}

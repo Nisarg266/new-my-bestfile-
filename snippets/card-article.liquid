@@ -1,0 +1,131 @@
+{% comment %}
+    Renders an article card
+    Accepts:
+    - article: {Object} Article Liquid object
+    - class: {String} Class to be applied to the card
+    - show_date: {Boolean} Show date
+    - show_author: {Boolean} Show author
+    - show_excerpt: {Boolean} Show excerpt
+    Usage:
+    {%- render 'card-article', article: blog.articles[0] -%}
+{% endcomment %}
+
+<style>
+.card-article {
+  width: 100%;
+  max-width: 380px; /* or whatever size you want */
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: white;
+  height:340px;
+}
+
+.card-article__media {
+  width: 100%;
+  aspect-ratio: 4 / 3; /* keep proportions */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 5px;
+}
+
+.card-article__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* ensures full fill */
+  border-radius: inherit;
+  display: block;
+}
+@media screen and (max-width: 767px) {
+  .card-article {
+    display: flex;
+    flex-direction: column;
+  }
+.card-article {
+
+  height:320px;
+}
+  .card-article__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-article__read-more {
+    margin-top: auto; /* Push to bottom */
+  }
+}
+
+
+</style>
+{% liquid
+  assign image_per_view = image_per_view | default: 1
+  assign article_title_placeholder = 'blog.post' | t
+  assign article_author_placeholder = 'blog.author' | t
+  assign article_content_placeholder = 'blog.sample_content' | t
+  assign article_title = article.title | default: article_title_placeholder
+  assign article_author = article.author | default: article_author_placeholder
+  assign article_content = article.excerpt_or_content | default: article_content_placeholder
+%}
+
+{%- assign image_per_view = image_per_view | default: 1 -%}
+
+<article class="card-article {{ class }}">
+  <a href="{{- article.url -}}">
+    <div class="media card-article__media image">
+      {%- liquid
+        if article.image != blank
+          render 'image', image: article.image, alt: article.image.alt | escape, image_per_view: image_per_view
+        else
+          echo 'image' | placeholder_svg_tag: 'placeholder-svg'
+        endif
+      -%}
+    </div>
+
+    {%- assign content_alignment = content_alignment | default: '' -%}
+
+    <div style="padding-left:0px; line-height: 2;" class="card-article__content {{ content_alignment }}">
+      <h3 class="card-article__title h6">
+        {{- article_title -}}
+      </h3>
+
+      {%- if show_excerpt -%}
+        {%- if article.excerpt.size > 0 or article.content.size > 0 or article_content.size > 0 -%}
+          <div class="card-article__entry entry entry--list-padding-none">
+            <p>
+              {{- article_content | strip_html | truncate: 180 -}}
+            </p>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- if show_author or show_date -%}
+        <div style="font-size:10px" class="card-article__meta">
+          <span class="article-card__author">
+            {%- if show_author -%}
+              {%- if show_date -%}
+                {{- article_author -}}
+              {%- else -%}
+                {{- 'blog.posted_by' | t: author: article_author -}}
+              {%- endif -%}
+            {%- endif -%}
+          </span>
+
+          {%- if show_date -%}
+            {%- assign date_format = 'theme.date.format_short' | t -%}
+            {%- assign published_at = article.published_at | date: date_format -%}
+            <span class="article-card__date">
+              {{ 'blog.posted_on' | t: date: published_at -}}
+            </span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+        <div style="font-size:12px" class="card-article__read-more ">
+          {{- 'theme.actions.read_more' | t -}}
+        </div>
+      
+    </div>
+  </a>
+</article>
