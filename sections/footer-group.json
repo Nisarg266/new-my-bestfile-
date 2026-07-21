@@ -140,7 +140,7 @@
             "column_factor": 1,
             "row_factor": 1,
             "menu_layout": "vertical",
-            "menu": "footer",
+            "menu": "quick-links",
             "title": "",
             "title_url": "",
             "menu_link_opacity": 100,
