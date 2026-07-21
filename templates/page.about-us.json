@@ -18,7 +18,7 @@
         "heading_size": 36,
         "subheading": "",
         "button_label": "",
-        "button_link": "shopify://collections/skin",
+        "button_link": "shopify://collections/collection",
         "secondary_button_label": "",
         "secondary_button_link": "",
         "heading_color": "#000000",
@@ -41,7 +41,7 @@
       "settings": {
         "paragraph_text": "<p>My Best Life™ was created for those who demand more from their wellness journey. Maximising physical and mental wellbeing requires uncompromising solutions. Our premium supplements are powered by scientific precision and nature’s intelligence. Rooted in rigorous research, our products provide the optimal foundation for you to thrive.<br/></p><p>My Best Life™ is more than a supplement brand. It’s a movement to bridge the gap between science and everyday wellness — delivering trusted, effective, and accessible health solutions for those committed to living their best life, every day.<br/><br/></p>",
         "button_text": "Shop Now",
-        "button_link": "shopify://collections/skin",
+        "button_link": "shopify://collections/collection",
         "background_color": "#ffffff",
         "text_color": "#111111",
         "button_bg_color": "#2a2a2a",
@@ -71,7 +71,7 @@
         "subheading": "Where Innovation Meets Purpose",
         "paragraph": "At My Best Life™, we blend innovation with intention—creating\nwellness solutions that are sustainably sourced and scientifically\nformulated. Our expert team ensures every product delivers\nmaximum efficacy, enhanced bioavailability, and uncompromised\nsafety—powered by liposomal tech, plant-based actives, and a deep\ncommitment to your well-being.",
         "button_label": "Shop Now",
-        "button_link": "shopify://collections/skin",
+        "button_link": "shopify://collections/collection",
         "image": "shopify://shop_images/freepik__upload__25558_copy.jpg",
         "padding_top_desktop": 60,
         "padding_bottom_desktop": 60,
@@ -1297,7 +1297,7 @@
         "accordion-position": "accordion-right",
         "show_button_view": true,
         "button_label_view": "Here to help",
-        "button_link_view": "shopify://pages/contact-us",
+        "button_link_view": "shopify://pages/contact",
         "pre_button_description": "Feel free to ask any questions you have!",
         "top_padding": 80,
         "bottom_padding": 80,
@@ -1382,7 +1382,6 @@
         "padding_bottom": 20,
         "logo_width": 200,
         "logo_gap": 60,
-        "logo_1": "shopify://shop_images/amazon_PNG1.webp",
         "logo_2": "shopify://shop_images/XMLID_109_6d10e992-ee1e-4345-89c0-c52e353f1f07.png",
         "logo_height": 100
       }
