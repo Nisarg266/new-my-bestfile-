@@ -1232,6 +1232,33 @@
         "logo_2": "shopify://shop_images/XMLID_109_6d10e992-ee1e-4345-89c0-c52e353f1f07.png",
         "logo_height": 100
       }
+    },
+    "178464965732cfbd16": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_8xVtAL": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_8xVtAL"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -1258,6 +1285,7 @@
     "section_testimonial_home_D9pfH8",
     "bestlife_blog_section_dNYF6J",
     "1752053092866b24cc",
-    "find_us_on_eE46Nw"
+    "find_us_on_eE46Nw",
+    "178464965732cfbd16"
   ]
 }
