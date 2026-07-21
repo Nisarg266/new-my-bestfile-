@@ -152,6 +152,7 @@
         },
         "pack_contain_metafield": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "spacing_bottom": "1",
             "heading": "",

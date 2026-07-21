@@ -90,6 +90,11 @@
         "type": "shopify://apps/dondy-whatsapp/blocks/app-block/7f5a70cb-e171-4cc7-ac02-e2220203abd6",
         "disabled": false,
         "settings": {}
+      },
+      "1255249168098304288": {
+        "type": "shopify://apps/another-bundles/blocks/another/2c1fd58f-514b-48c1-ab75-0a3a1c3b8b2d",
+        "disabled": false,
+        "settings": {}
       }
     },
     "color_schemes": {
