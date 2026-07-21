@@ -196,7 +196,7 @@
       "type": "blog-main1",
       "name": "Blog Cards",
       "settings": {
-        "blog": "mbl-blogs",
+        "blog": "news",
         "max_articles": 50,
         "heading": "",
         "subheading": "Your destination for evidence-based wellness, curated by experts for the life you deserve.",
