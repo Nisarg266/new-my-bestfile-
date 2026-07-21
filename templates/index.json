@@ -1207,7 +1207,7 @@
         "padding_top": 60,
         "padding_bottom": 60,
         "background_color": "#fefcf9",
-        "blog": "mbl-blogs",
+        "blog": "news",
         "show_excerpt": true,
         "show_read_more": true,
         "section_width": "max-w-page",
@@ -1216,29 +1216,6 @@
     },
     "1752053092866b24cc": {
       "type": "apps",
-      "blocks": {
-        "instafeed_app_block_gKYGCA": {
-          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
-          "settings": {
-            "title": "",
-            "title_color": "#2a2a2a",
-            "title_size_v2": 42,
-            "alignment": "center",
-            "instafeed_margin_top": 30,
-            "instafeed_margin_bottom": 30,
-            "instafeed_margin_sides": 0,
-            "show_instagram_link": false,
-            "link_alignment": "center",
-            "link_color": "#2a2a2a",
-            "background_color": "#ffffff",
-            "feed_id": "",
-            "html_area": "<style>\n@media screen and (max-width: 768px) {\n  #insta-feed h2 {\n    font-size: 28px !important;\n \n  }\nbody #insta-feed{\n\npadding-top:30px !important;\npadding-bottom:30px !important;\n\n}\n\n}\n#insta-feed h2{\n      font-weight: 800;\n      letter-spacing:1px;\nfont-family:'Fira Sans', 'Inter', sans-serif;\n color: #b4975a;  \ntext-transform: uppercase;\n}\n.instafeed-new-layout-item-container {\n  position: relative;\n  overflow: hidden;\n}\n\n.instafeed-new-layout-item-container::before {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  background: rgba(0, 0, 0, 0); /* Start transparent */\n  transition: background 0.3s ease;\n  z-index: 1;\n}\n\n.instafeed-new-layout-item-container:hover::before {\n  background: rgba(0, 0, 0, 0.4); /* Black shade */\n}\n\n</style>"
-          }
-        }
-      },
-      "block_order": [
-        "instafeed_app_block_gKYGCA"
-      ],
       "custom_css": [],
       "settings": {}
     },
@@ -1252,7 +1229,6 @@
         "padding_bottom": 40,
         "logo_width": 170,
         "logo_gap": 60,
-        "logo_1": "shopify://shop_images/amazon_PNG1.webp",
         "logo_2": "shopify://shop_images/XMLID_109_6d10e992-ee1e-4345-89c0-c52e353f1f07.png",
         "logo_height": 100
       }
