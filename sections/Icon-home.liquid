@@ -68,15 +68,64 @@
   ]
 }
 {% endschema %}
+
+<div class="icon-row-outer" style="background-color: {{ section.settings.background_color }};">
+  <div class="icon-row-container">
+    <div class="icon-row-track">
+
+<!-- 4x Duplicated Sets -->
+{% for b9_repeat in (1..7) %}
+  {% for b9_icon in section.blocks %}
+    <div class="icon-item">
+      <div class="icon-circle" style="
+        {% comment %} width: {{ section.settings.icon_size }}px;
+        height: {{ section.settings.icon_size }}px; {% endcomment %}
+        background-color: {{ section.settings.circle_background_color }};
+        border-radius: 50%;
+        aspect-ratio: 1/1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto 10px auto;">
+        {% if b9_icon.settings.icon_image %}
+          <img src="{{ b9_icon.settings.icon_image | image_url: width: 100 }}" alt="icon" style="max-width: 80%; max-height: 80%; object-fit: contain;">
+        {% endif %}
+      </div>
+      <div class="icon-label">{{ b9_icon.settings.label_text }}</div>
+    </div>
+  {% endfor %}
+{% endfor %}
+
+
+      <!-- Duplicate Set (Mobile Only) -->
+
+
+    </div>
+  </div>
+</div>
+
 {% stylesheet %}
-.icon-row-outer {
-  overflow: hidden;
-  padding: 40px 20px;
+.icon-circle img {
+  max-width: 60%;
+  max-height: 60%;
+  object-fit: contain;
 }
 
-.icon-row-container {
-  overflow: hidden;
-  position: relative;
+.icon-circle {
+  width: {{ section.settings.icon_size }}px;
+  height: {{ section.settings.icon_size }}px;
+  background-color: {{ section.settings.circle_background_color }};
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 10px auto;
+}
+
+.icon-item {
+  text-align: center;
+  max-width: 150px;
+  flex: 0 0 auto;
 }
 
 .icon-row-track {
@@ -93,27 +142,15 @@
 
 }
 }
-.icon-item {
-  text-align: center;
-  max-width: 150px;
-  flex: 0 0 auto;
+
+.icon-row-container {
+  overflow: hidden;
+  position: relative;
 }
 
-.icon-circle {
-  width: {{ section.settings.icon_size }}px;
-  height: {{ section.settings.icon_size }}px;
-  background-color: {{ section.settings.circle_background_color }};
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto 10px auto;
-}
-
-.icon-circle img {
-  max-width: 60%;
-  max-height: 60%;
-  object-fit: contain;
+.icon-row-outer {
+  overflow: hidden;
+  padding: 40px 20px;
 }
 
 .icon-label {
@@ -133,39 +170,3 @@
   }
 }
 {% endstylesheet %}
-
-
-<div class="icon-row-outer" style="background-color: {{ section.settings.background_color }};">
-  <div class="icon-row-container">
-    <div class="icon-row-track">
-      
-<!-- 4x Duplicated Sets -->
-{% for i in (1..7) %}
-  {% for block in section.blocks %}
-    <div class="icon-item">
-      <div class="icon-circle" style="
-        {% comment %} width: {{ section.settings.icon_size }}px;
-        height: {{ section.settings.icon_size }}px; {% endcomment %}
-        background-color: {{ section.settings.circle_background_color }};
-        border-radius: 50%;
-        aspect-ratio: 1/1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 0 auto 10px auto;">
-        {% if block.settings.icon_image %}
-          <img src="{{ block.settings.icon_image | image_url: width: 100 }}" alt="icon" style="max-width: 80%; max-height: 80%; object-fit: contain;">
-        {% endif %}
-      </div>
-      <div class="icon-label">{{ block.settings.label_text }}</div>
-    </div>
-  {% endfor %}
-{% endfor %}
-
-
-      <!-- Duplicate Set (Mobile Only) -->
-      
-
-    </div>
-  </div>
-</div>

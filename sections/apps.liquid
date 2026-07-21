@@ -1,9 +1,3 @@
-<div class="app-embeds">
-  {%- for block in section.blocks -%}
-    {% render block %}
-  {%- endfor -%}
-</div>
-
 {% schema %}
 {
   "name": "t:sections.apps.name",
@@ -23,3 +17,10 @@
   ]
 }
 {% endschema %}
+
+{%- assign s1_embed_blocks = section.blocks -%}
+<div class="app-embeds">
+  {%- for s1_app_block in s1_embed_blocks -%}
+    {% render s1_app_block %}
+  {%- endfor -%}
+</div>

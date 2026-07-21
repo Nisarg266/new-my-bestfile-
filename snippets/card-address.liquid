@@ -1,44 +1,36 @@
-{% comment %}
-  Renders address card
-  Accepts:
-  - address_ref: {Object} Liquid address object
-  - title: {String} Title of the address
-  - action_type: {String} Type of actions. Accepts: 'single' or 'multiple'
-{% endcomment %}
+{%- comment -%}
+  Customer address card.
+  params: address_ref, title, action_type ('single'|'multiple')
+{%- endcomment -%}
 
-{%- assign address_ref = address_ref -%}
-{%- assign title = title | default: false -%}
-{%- assign action_type = action_type | default: false -%}
+{%- assign addr_ref = address_ref -%}
+{%- assign addr_title = title | default: false -%}
+{%- assign addr_actions = action_type | default: false -%}
 
 <div class="account-card">
   <h3 class="account-card__title h6">
-    {%- if title -%}
-      {{- title -}}
-    {%- elsif address_ref == customer.default_address -%}
+    {%- if addr_title -%}
+      {{- addr_title -}}
+    {%- elsif addr_ref == customer.default_address -%}
       {{- 'customer.addresses.default' | t -}}
     {%- endif -%}
   </h3>
 
   <div class="account-card__row">
-    {{- address_ref | format_address | replace: '<p', '<p class="account-card__text"' -}}
+    {{- addr_ref | format_address | replace: '<p', '<p class="account-card__text"' -}}
   </div>
 
-  {%- if action_type -%}
+  {%- if addr_actions -%}
     <div class="account-card__actions">
-      {%- if action_type == 'single' -%}
+      {%- if addr_actions == 'single' -%}
         {% liquid
-          assign value = 'customer.addresses.view_addresses' | t: count: customer.addresses_count
-          render 'button', type: 'link', href: routes.account_addresses_url, value: value, class: 'button button--outlined'
-          assign value = nil
+          assign btn_val = 'customer.addresses.view_addresses' | t: count: customer.addresses_count
+          render 'button', type: 'link', href: routes.account_addresses_url, value: btn_val, class: 'button button--outlined'
+          assign btn_val = nil
         %}
-      {%- elsif action_type == 'multiple' -%}
-        <button class="link" data-form-id="EditAddress_{{- address_ref.id -}}">
-          {{- 'customer.addresses.edit_address' | t -}}
-        </button>
-
-        <button class="link" data-target="{{- address_ref.url -}}" data-confirm-message="{{- 'customer.addresses.delete_confirm' | t | escape -}}">
-          {{- 'customer.addresses.delete' | t -}}
-        </button>
+      {%- elsif addr_actions == 'multiple' -%}
+        <button class="link" data-form-id="EditAddress_{{- addr_ref.id -}}">{{- 'customer.addresses.edit_address' | t -}}</button>
+        <button class="link" data-target="{{- addr_ref.url -}}" data-confirm-message="{{- 'customer.addresses.delete_confirm' | t | escape -}}">{{- 'customer.addresses.delete' | t -}}</button>
       {%- endif -%}
     </div>
   {%- endif -%}

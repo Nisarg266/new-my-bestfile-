@@ -1,25 +1,18 @@
-{{ 'section-banner-cards.css' | asset_url | stylesheet_tag }}
-<style>
-  .card-heading{
-    font-size:23px !important;
-  line-height:1.4;
-  }
-</style>
 <div class="banner-cards-section" style="background-image: url({{ section.settings.background_image | image_url: width: 2000 }});">
   <div class="overlay" style="background-color: {{ section.settings.overlay_color }}; opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};">
     <div class="content-wrapper">
       <h2 class="banner-heading {{ section.settings.heading_size }}">{{ section.settings.heading }}</h2>
-     
+
       <div class="cards-row">
-        {% for block in section.blocks %}
+        {% for b7_item in section.blocks %}
           <div class="card-item">
-            {% if block.settings.logo %}
+            {% if b7_item.settings.logo %}
               <div class="card-logo">
-                <img src="{{ block.settings.logo | image_url: width: 100 }}" alt="{{ block.settings.heading }}">
+                <img src="{{ b7_item.settings.logo | image_url: width: 100 }}" alt="{{ b7_item.settings.heading }}">
               </div>
             {% endif %}
-            <h4 class="card-heading">{{ block.settings.heading }}</h4>
-            <p class="card-description">{{ block.settings.description }}</p>
+            <h4 class="card-heading">{{ b7_item.settings.heading }}</h4>
+            <p class="card-description">{{ b7_item.settings.description }}</p>
           </div>
         {% endfor %}
       </div>
@@ -30,6 +23,14 @@
     </div>
   </div>
 </div>
+
+{{ 'section-banner-cards.css' | asset_url | stylesheet_tag }}
+<style>
+  .card-heading{
+    font-size:23px !important;
+  line-height:1.4;
+  }
+</style>
 <style>
   @media (max-width: 738px) {
 .scroll-btn .left
@@ -44,39 +45,40 @@ font-size:18px;
 }
 }
 </style>
+
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const row = document.querySelector('.cards-row');
-    const btnLeft = document.querySelector('.scroll-btn.left');
-    const btnRight = document.querySelector('.scroll-btn.right');
-    const cards = document.querySelectorAll('.card-item');
+    const b7_row = document.querySelector('.cards-row');
+    const b7_btnLeft = document.querySelector('.scroll-btn.left');
+    const b7_btnRight = document.querySelector('.scroll-btn.right');
+    const b7_cards = document.querySelectorAll('.card-item');
 
     // Scroll actions
-    btnLeft.addEventListener('click', () => {
-      row.scrollBy({ left: -300, behavior: 'smooth' });
+    b7_btnLeft.addEventListener('click', () => {
+      b7_row.scrollBy({ left: -300, behavior: 'smooth' });
     });
 
-    btnRight.addEventListener('click', () => {
-      row.scrollBy({ left: 300, behavior: 'smooth' });
+    b7_btnRight.addEventListener('click', () => {
+      b7_row.scrollBy({ left: 300, behavior: 'smooth' });
     });
 
     // Show arrows based on screen size and number of cards
     function toggleScrollButtons() {
-      const screenWidth = window.innerWidth;
-      const cardCount = cards.length;
+      const b7_screenWidth = window.innerWidth;
+      const b7_cardCount = b7_cards.length;
 
-      if (screenWidth <= 550) {
+      if (b7_screenWidth <= 550) {
         // Always show on mobile
-        btnLeft.style.display = 'block';
-        btnRight.style.display = 'block';
+        b7_btnLeft.style.display = 'block';
+        b7_btnRight.style.display = 'block';
       } else {
         // Show only if more than 2 cards on tablet/desktop
-        if (cardCount > 3) {
-          btnLeft.style.display = 'block';
-          btnRight.style.display = 'block';
+        if (b7_cardCount > 3) {
+          b7_btnLeft.style.display = 'block';
+          b7_btnRight.style.display = 'block';
         } else {
-          btnLeft.style.display = 'none';
-          btnRight.style.display = 'none';
+          b7_btnLeft.style.display = 'none';
+          b7_btnRight.style.display = 'none';
         }
       }
     }

@@ -1,46 +1,26 @@
-{% comment %}
-  Renders select input form element
-  Accepts:
-  - id {String} ID of the input element
-  - label {String} Label of the input element
-  - name {String} Name of the input element
-  - class {String} Class of the input element
-  - label_class {String} Class of the label element
-  - options {HTML} Options to be rendered
-  - attr {HTML} Other attributes to be rendered
-  - custom {Bool} Renders custom dropdown for select input
-  - element {String} Custom HTML element for `custom` prop
+{%- comment -%}
+  Custom dropdown select input.
+  params: id, label, name, class, label_class, options, attr, custom, element, swatch_value, shape
+{%- endcomment -%}
 
-  Usage:
-  {%- render 'select-input',
-    id: 'select-input',
-    label: 'Select Input',
-    name: 'select-input',
-    options: options_html
-  -%}
-{% endcomment %}
-
-{%-
-  liquid
-  assign id = id | default: false
-  assign label = label | default: false
-  assign name = name | default: false
-  assign class = class | default: ''
-  assign label_class = label_class | default: ''
-  assign options = options | default: ''
-  assign element = element | default: 'dropdown-input'
+{%- liquid
+  assign sel_id = id | default: false
+  assign sel_label = label | default: false
+  assign sel_name = name | default: false
+  assign sel_class = class | default: ''
+  assign sel_label_class = label_class | default: ''
+  assign sel_options = options | default: ''
+  assign sel_element = element | default: 'dropdown-input'
 -%}
 
-<{{- element -}}>
-  {%- assign option_name = name | split: '[' | last | split: ']' | first -%}
+<{{- sel_element -}}>
+  {%- assign opt_name = sel_name | split: '[' | last | split: ']' | first -%}
 
   <select
-    {% if name %}name="{{- name -}}"{% endif %}
-    {% if id %}id="{{- id -}}"{% endif %}
-    {% if attr %}{{ attr }}{% endif %}
-  >
-    {{- options -}}
-  </select>
+    {%- if sel_name %} name="{{- sel_name -}}"{% endif -%}
+    {%- if sel_id %} id="{{- sel_id -}}"{% endif -%}
+    {{ attr }}
+  >{{- sel_options -}}</select>
 
   <template data-name="option">
     <li class="dropdown__item" data-item>
@@ -51,27 +31,18 @@
   <template data-name="details">
     <details class="dropdown disclosure-has-popup no-js-hidden">
       <summary class="dropdown__summary">
-        {%- if label -%}
-          <div class="dropdown__label">
-            {{- label | escape -}}
-          </div>
+        {%- if sel_label -%}
+          <div class="dropdown__label">{{- sel_label | escape -}}</div>
         {%- endif -%}
-
-        <div class="dropdown__button" data-option-name="{{- option_name -}}">
-
-          {% if swatch_value %}
-            {% render 'swatch', swatch: swatch_value, shape: shape %}
-          {% endif %}
-
-          <span data-label>{{- label | escape -}}</span>
-
+        <div class="dropdown__button" data-option-name="{{- opt_name -}}">
+          {% if swatch_value %}{% render 'swatch', swatch: swatch_value, shape: shape %}{% endif %}
+          <span data-label>{{- sel_label | escape -}}</span>
           {% render 'icon', icon_name: 'theme-chevron-down', class: 'icon' %}
         </div>
       </summary>
-
       <div class="dropdown__list">
         <ul class="dropdown__items list-unstyled" data-options></ul>
       </div>
     </details>
   </template>
-</{{- element -}}>
+</{{- sel_element -}}>

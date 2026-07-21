@@ -1,34 +1,3 @@
-{{- 'component-search-hero.css' | asset_url | stylesheet_tag -}}
-
-{%- style -%}
-  #shopify-section-{{ section.id }} > div {
-    padding-block-start: calc(var(--section-spacing-unit-size) * {{ section.settings.spacing_top }});
-    padding-block-end: calc(var(--section-spacing-unit-size) * {{ section.settings.spacing_bottom }});
-  }
-{%- endstyle -%}
-
-<div class="color-{{ section.settings.color_scheme }} gradient">
-  <div class="search-hero">
-    <div class="container {{ section.settings.section_width }}">
-      <h1 class="search-hero__title">
-        {%- if search.performed -%}
-          <span class="search-hero__title-small h4">
-            {{- 'search.results_for' | t -}}
-          </span>
-          <span>
-            {{- search.terms -}}<small>{{- search.results_count -}}</small>
-          </span>
-        {%- else -%}
-          {{- 'search.no_results' | t -}}
-        {%- endif -%}
-      </h1>
-      <div class="search-hero__input">
-        {%- render 'search', with input_id: 'desktop', input_class: ' js-drawer-focus-element', value: search.terms, clear_button_visible: true -%}
-      </div>
-    </div>
-  </div>
-</div>
-
 {% schema %}
 {
   "name": "t:sections.main-search-banner.name",
@@ -120,3 +89,37 @@
   ]
 }
 {% endschema %}
+
+{{- 'component-search-hero.css' | asset_url | stylesheet_tag -}}
+
+{%- assign s8_cfg = section.settings -%}
+{%- assign s8_sid = section.id -%}
+
+{%- style -%}
+  #shopify-section-{{ s8_sid }} > div {
+    padding-block-start: calc(var(--section-spacing-unit-size) * {{ s8_cfg.spacing_top }});
+    padding-block-end: calc(var(--section-spacing-unit-size) * {{ s8_cfg.spacing_bottom }});
+  }
+{%- endstyle -%}
+
+<div class="color-{{ s8_cfg.color_scheme }} gradient">
+  <div class="search-hero">
+    <div class="container {{ s8_cfg.section_width }}">
+      <h1 class="search-hero__title">
+        {%- if search.performed -%}
+          <span class="search-hero__title-small h4">
+            {{- 'search.results_for' | t -}}
+          </span>
+          <span>
+            {{- search.terms -}}<small>{{- search.results_count -}}</small>
+          </span>
+        {%- else -%}
+          {{- 'search.no_results' | t -}}
+        {%- endif -%}
+      </h1>
+      <div class="search-hero__input">
+        {%- render 'search', with input_id: 'desktop', input_class: ' js-drawer-focus-element', value: search.terms, clear_button_visible: true -%}
+      </div>
+    </div>
+  </div>
+</div>

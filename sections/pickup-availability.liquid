@@ -1,27 +1,27 @@
 {% comment %}theme-check-disable UndefinedObject{% endcomment %}
-{%- assign pick_up_availabilities = product_variant.store_availabilities | where: 'pick_up_enabled', true -%}
+{%- assign b11_availabilities = product_variant.store_availabilities | where: 'pick_up_enabled', true -%}
 
-{%- if pick_up_availabilities.size > 0 -%}
+{%- unless b11_availabilities.size == 0 -%}
   <pickup-availability-preview class="pickup-availability-preview">
-    {%- assign closest_location = pick_up_availabilities.first -%}
+    {%- assign b11_nearest = b11_availabilities.first -%}
 
-    {%- if closest_location.available -%}
+    {%- if b11_nearest.available -%}
       <p class="pickup-availability__info-title">
-        {{- 'product.pickup_available_at_html' | t: location_name: closest_location.location.name -}}
+        {{- 'product.pickup_available_at_html' | t: location_name: b11_nearest.location.name -}}
       </p>
       <p class="pickup-availability__info-meta">
-        {{- closest_location.pick_up_time -}}
+        {{- b11_nearest.pick_up_time -}}
       </p>
     {%- else -%}
       <p class="pickup-availability__info-title">
-        {{- 'product.pickup_unavailable_at_html' | t: location_name: closest_location.location.name -}}
+        {{- 'product.pickup_unavailable_at_html' | t: location_name: b11_nearest.location.name -}}
       </p>
     {%- endif -%}
     <menu-drawer class="pickup-availability__drawer drawer">
       <details id="Pickup-Availability-drawer" class="drawer__container">
         <summary class="drawer__button section__drawer-button">
           <button type="button" class="button button--text button--uppercase">
-            {%- if pick_up_availabilities.size == 1 -%}
+            {%- if b11_availabilities.size == 1 -%}
               {{- 'product.pickup_view_store_info' | t -}}
             {%- else -%}
               {{- 'product.pickup_check_other_stores' | t -}}
@@ -43,26 +43,26 @@
               {{ 'product.pickup_availability' | t }}
             </h2>
             <ul class="pickup-availability-stores list-unstyled" role="list">
-              {%- for store_availability in product_variant.store_availabilities -%}
+              {%- for b11_store in product_variant.store_availabilities -%}
                 <li class="pickup-availability-store">
                   <p class="pickup-availability-store__title">
-                    {{- store_availability.location.name | escape -}}
+                    {{- b11_store.location.name | escape -}}
                   </p>
                   <p class="pickup-availability-store__preview">
-                    {%- if store_availability.available -%}
+                    {%- if b11_store.available -%}
                       {% render 'icon', icon_name: 'theme-check' %}
-                      {{ 'product.pickup_available' | t }}, {{ store_availability.pick_up_time | downcase }}
+                      {{ 'product.pickup_available' | t }}, {{ b11_store.pick_up_time | downcase }}
                     {%- else -%}
                       {% render 'icon', icon_name: 'theme-close' %}
-                      {{ 'product.pickup_unavailable' | t }}, {{ store_availability.pick_up_time | downcase }}
+                      {{ 'product.pickup_unavailable' | t }}, {{ b11_store.pick_up_time | downcase }}
                     {%- endif -%}
                   </p>
-                  {%- assign store_availability_address = store_availability.location.address -%}
+                  {%- assign b11_store_address = b11_store.location.address -%}
                   <address class="pickup-availability-address">
-                    {{- store_availability_address | format_address -}}
-                    {%- if store_availability_address.phone.size > 0 -%}
-                      <p>{{- store_availability_address.phone -}}</p>
-                    {%- endif -%}
+                    {{- b11_store_address | format_address -}}
+                    {%- unless b11_store_address.phone.size == 0 -%}
+                      <p>{{- b11_store_address.phone -}}</p>
+                    {%- endunless -%}
                   </address>
                 </li>
               {%- endfor -%}
@@ -72,4 +72,4 @@
       </details>
     </menu-drawer>
   </pickup-availability-preview>
-{%- endif -%}
+{%- endunless -%}

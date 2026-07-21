@@ -1,12 +1,7 @@
-{% comment %}
-  Renders 'As seen on' additional image gallery with metafields for main product
-
-  Accepts:
-    - product: {Object} - Product object.
-
-  Usage:
-    {% render 'product-as-seen-on', product: product, metafield_as_seen_on: metafield %}
-{% endcomment %}
+{%- comment -%}
+  'As seen on' modal gallery for product pages.
+  params: product, metafield_as_seen_on
+{%- endcomment -%}
 
 {{- 'component-product-as-seen-on.css' | asset_url | stylesheet_tag -}}
 <script src="{{- 'product-as-seen-on.js' | asset_url -}}" defer="defer"></script>
@@ -18,23 +13,14 @@
       {%- render 'icon', icon_name: 'theme-plus' -%}
     </button>
   </modal-opener>
+
   <modal-dialog id="ProductAsSeenOnModal" class="product-as-seen-on-modal">
-    <div
-      class="product-as-seen-on-modal__dialog"
-      role="dialog"
-      tabindex="-1"
-      aria-label="{{- 'product.as_seen_on' | t -}}"
-      aria-modal="true"
-    >
+    <div class="product-as-seen-on-modal__dialog" role="dialog" tabindex="-1" aria-label="{{- 'product.as_seen_on' | t -}}" aria-modal="true">
       <div class="product-as-seen-on-modal__content" role="document" aria-label="{{- 'product.as_seen_on' | t -}}" tabindex="0">
         <product-asseenon-slider class="swiper">
           <div class="swiper-wrapper">
             {%- for field in metafield_as_seen_on.value -%}
-              <div class="swiper-slide">
-                <div class="media">
-                  {% render 'image', image: field %}
-                </div>
-              </div>
+              <div class="swiper-slide"><div class="media">{% render 'image', image: field %}</div></div>
             {%- endfor -%}
           </div>
 
@@ -44,17 +30,9 @@
           </div>
 
           <div class="product__media--counter product__as-seen-on--counter">
-            <span
-              class="product__media--counter-index"
-              data-asseenon-media-counter-index
-              >1</span
-            >
+            <span class="product__media--counter-index" data-asseenon-media-counter-index>1</span>
             <span>|</span>
-            <span>
-              {% paginate metafield_as_seen_on.value by 1 %}
-              {{ paginate.items }}
-              {% endpaginate %}
-            </span>
+            <span>{% paginate metafield_as_seen_on.value by 1 %}{{ paginate.items }}{% endpaginate %}</span>
           </div>
 
           <button id="ModalClose-ProductAsSeenOnModal" type="button" class="product-as-seen-on-modal__close" aria-label="{{- 'theme.actions.close' | t -}}">
@@ -64,12 +42,8 @@
       </div>
     </div>
     <div class="swiper-buttons">
-      <button class="swiper-button swiper-button--prev" aria-label="{{- 'theme.actions.previous' | t -}}">
-        {%- render 'icon', icon_name: 'theme-chevron' -%}
-      </button>
-      <button class="swiper-button swiper-button--next" aria-label="{{- 'theme.actions.next' | t -}}">
-        {%- render 'icon', icon_name: 'theme-chevron' -%}
-      </button>
+      <button class="swiper-button swiper-button--prev" aria-label="{{- 'theme.actions.previous' | t -}}">{%- render 'icon', icon_name: 'theme-chevron' -%}</button>
+      <button class="swiper-button swiper-button--next" aria-label="{{- 'theme.actions.next' | t -}}">{%- render 'icon', icon_name: 'theme-chevron' -%}</button>
     </div>
   </modal-dialog>
 </div>

@@ -22,19 +22,6 @@
 }
 {% endschema %}
 
-<section class="full-height-center-section">
-  <div class="content-wrapper">
-    <h2 class="section-heading">{{ section.settings.heading }}</h2>
-    {% if section.settings.section_image != blank %}
-      <div class="image-scroll-wrapper">
-        <img style="width: 100%" src="{{ section.settings.section_image | image_url: width: 1600 }}" 
-             alt="Section Image" 
-             class="section-image" />
-      </div>
-    {% endif %}
-  </div>
-</section>
-
 <style>
 .full-height-center-section {
   display: flex;
@@ -97,3 +84,19 @@
   }
 }
 </style>
+
+{%- assign s4_settings = section.settings -%}
+{%- assign s4_img = s4_settings.section_image -%}
+
+<section class="full-height-center-section">
+  <div class="content-wrapper">
+    <h2 class="section-heading">{{ s4_settings.heading }}</h2>
+    {%- unless s4_img == blank -%}
+      <div class="image-scroll-wrapper">
+        <img style="width: 100%" src="{{ s4_img | image_url: width: 1600 }}"
+             alt="Section Image"
+             class="section-image" />
+      </div>
+    {%- endunless -%}
+  </div>
+</section>

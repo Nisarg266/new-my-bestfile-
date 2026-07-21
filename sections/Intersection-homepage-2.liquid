@@ -43,41 +43,41 @@
 }
 {% endschema %}
 
+{% assign b8_height_mode = section.settings.height_mode %}
+{% assign b8_fixed_class = '' %}
+{% if b8_height_mode != 'auto' %}
+  {% assign b8_fixed_class = 'fixed-' | append: b8_height_mode %}
+{% endif %}
+
+<div class="responsive-image-wrapper {% unless section.settings.height_mode == 'auto' %}{{ b8_fixed_class }}{% endunless %}">
+  {% if section.settings.image_link != blank %}
+    <a href="{{ section.settings.image_link }}">
+  {% endif %}
+
+  {% if section.settings.desktop_image %}
+    <img
+      src="{{ section.settings.desktop_image | img_url: 'master' }}"
+      alt="Desktop Banner"
+      class="desktop-img"
+      loading="lazy"
+    >
+  {% endif %}
+
+  {% if section.settings.mobile_image %}
+    <img
+      src="{{ section.settings.mobile_image | img_url: 'master' }}"
+      alt="Mobile Banner"
+      class="mobile-img"
+      loading="lazy"
+    >
+  {% endif %}
+
+  {% if section.settings.image_link != blank %}
+    </a>
+  {% endif %}
+</div>
+
 <style>
-    .responsive-image-wrapper {
-      position: relative;
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-
-    .responsive-image-wrapper img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .responsive-image-wrapper .desktop-img {
-      display: block;
-    }
-
-    .responsive-image-wrapper .mobile-img {
-      display: none;
-    }
-    .responsive-image-wrapper {
-    position: relative;
-    display: block;
-    width: 100%;
-    overflow: hidden;
-  }
-
-  .responsive-image-wrapper img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    display: block;
-  }
-
   .responsive-image-wrapper.fixed-300 img,
   .responsive-image-wrapper.fixed-400 img,
   .responsive-image-wrapper.fixed-500 img,
@@ -86,6 +86,40 @@
   .responsive-image-wrapper.fixed-800 img {
     height: 100%;
   }
+
+  .responsive-image-wrapper {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .responsive-image-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .responsive-image-wrapper .desktop-img {
+    display: block;
+  }
+
+  .responsive-image-wrapper .mobile-img {
+    display: none;
+  }
+  .responsive-image-wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+}
+
+.responsive-image-wrapper img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
 
   .responsive-image-wrapper.fixed-300 {
     height: 300px;
@@ -133,38 +167,3 @@
       }
     }
 </style>
-
-{% assign height_mode = section.settings.height_mode %}
-{% if height_mode != 'auto' %}
-  {% assign fixed_class = 'fixed-' | append: height_mode %}
-{% else %}
-  {% assign fixed_class = '' %}
-{% endif %}
-
-<div class="responsive-image-wrapper {% unless section.settings.height_mode == 'auto' %}{{ fixed_class }}{% endunless %}">
-  {% if section.settings.image_link != blank %}
-    <a href="{{ section.settings.image_link }}">
-  {% endif %}
-
-  {% if section.settings.desktop_image %}
-    <img
-      src="{{ section.settings.desktop_image | img_url: 'master' }}"
-      alt="Desktop Banner"
-      class="desktop-img"
-      loading="lazy"
-    >
-  {% endif %}
-
-  {% if section.settings.mobile_image %}
-    <img
-      src="{{ section.settings.mobile_image | img_url: 'master' }}"
-      alt="Mobile Banner"
-      class="mobile-img"
-      loading="lazy"
-    >
-  {% endif %}
-
-  {% if section.settings.image_link != blank %}
-    </a>
-  {% endif %}
-</div>

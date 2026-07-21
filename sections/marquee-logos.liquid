@@ -77,20 +77,23 @@
 }
 {% endschema %}
 
+{%- assign s11_cfg = section.settings -%}
+{%- assign s11_logo_blocks = section.blocks -%}
+{%- assign s11_loops = 20 -%}
 
 <style>
 .marquee-wrapper {
   overflow: hidden;
   position: relative;
-  background-color: {{ section.settings.background_color }};
-  padding-top: {{ section.settings.padding_top }}px;
-  padding-bottom: {{ section.settings.padding_bottom }}px;
+  background-color: {{ s11_cfg.background_color }};
+  padding-top: {{ s11_cfg.padding_top }}px;
+  padding-bottom: {{ s11_cfg.padding_bottom }}px;
 }
 
 .marquee-track {
   display: flex;
   width: max-content;
-  animation: scroll-left {{ section.settings.speed }}s linear infinite;
+  animation: scroll-left {{ s11_cfg.speed }}s linear infinite;
   align-items: center;
 }
 
@@ -113,33 +116,31 @@
 }
 
 .logo-text-pair img {
-  height: {{ section.settings.logo_size }}px;
+  height: {{ s11_cfg.logo_size }}px;
   width: auto;
   display: block;
 }
 
 .marquee-text {
-  font-size: {{ section.settings.logo_size }}px;
+  font-size: {{ s11_cfg.logo_size }}px;
   line-height: 1;
   font-weight: 500;
-  color: {{ section.settings.font_color }};
+  color: {{ s11_cfg.font_color }};
   white-space: nowrap;
 }
 </style>
 
 <div class="marquee-wrapper">
   <div class="marquee-track">
-    {% assign repeat_count = 20 %}
-    {% for i in (1..repeat_count) %}
-      {% for block in section.blocks %}
+    {% for s11_pass in (1..s11_loops) %}
+      {%- for s11_blk in s11_logo_blocks -%}
         <div class="logo-text-pair">
-          {% if block.settings.logo_img %}
-            <img src="{{ block.settings.logo_img | image_url: width: 300 }}" alt="logo" loading="lazy" />
+          {% if s11_blk.settings.logo_img %}
+            <img src="{{ s11_blk.settings.logo_img | image_url: width: 300 }}" alt="logo" loading="lazy" />
           {% endif %}
-<div class="marquee-text">{{ block.settings.logo_text | rich_text }}</div>
+<div class="marquee-text">{{ s11_blk.settings.logo_text | rich_text }}</div>
         </div>
-      {% endfor %}
+      {%- endfor -%}
     {% endfor %}
   </div>
 </div>
-  

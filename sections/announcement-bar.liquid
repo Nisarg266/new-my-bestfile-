@@ -1,126 +1,119 @@
 {%- liquid
   render 'css', css: 'section-announcement-bar.css'
 
-  assign text_slide_blocks = section.blocks | where: 'type', 'text-slide'
+  assign text_blocks = section.blocks | where: 'type', 'text-slide'
 
+  assign is_marquee = false
   if section.settings.text_block_behaviour == 'marquee'
+    assign is_marquee = true
     render 'css', css: 'section-marquees.css'
-
-    assign marquee_duration_rate = section.settings.slider_autoplay_interval | times: 10
-    assign marquee_duration = text_slide_blocks.size | times: marquee_duration_rate
+    assign rate = section.settings.slider_autoplay_interval | times: 10
+    assign marquee_total = text_blocks.size | times: rate
   endif
 -%}
 
 {%- style -%}
-.marquee__item p{
-
-  color: lightgrey !important;
-}
+  .marquee__item p {
+    color: lightgrey !important;
+  }
   #shopify-section-{{ section.id }} .text--label,
   #shopify-section-{{ section.id }} .text--link,
   #shopify-section-{{ section.id }} .countdown-timer__message {
     font-weight: {{ section.settings.font_weight }};
   }
-  {%- if section.settings.text_block_behaviour == 'marquee' -%}
+  {%- if is_marquee -%}
     #shopify-section-{{ section.id }} > div {
-      --marquee-duration: {{ marquee_duration | times: 1 }}s;
+      --marquee-duration: {{ marquee_total | times: 1 }}s;
     }
     #shopify-section-{{ section.id }} > .swiper-wrapper {
       transition-timing-function: linear;
     }
     @media screen and (min-width: 750px) {
       #shopify-section-{{ section.id }} > div {
-        --marquee-duration: {{ marquee_duration }}s;
+        --marquee-duration: {{ marquee_total }}s;
       }
     }
   {%- endif -%}
 {%- endstyle -%}
 
-{%- if section.settings.text_block_behaviour != 'marquee' -%}
+{%- unless is_marquee -%}
   <script src="{{- 'announcement-bar-slider.js' | asset_url -}}" defer="defer"></script>
-  {% capture data_swiper_options %}
+  {% capture swiper_config_attr %}
     data-swiper-options = '{
       {%- if section.settings.text_block_behaviour == 'static' -%}
         "slidesPerView": 1,
-        "slidesPerViewDesktop": {{ text_slide_blocks.size }},
+        "slidesPerViewDesktop": {{ text_blocks.size }},
         "loop": false,
-        "autoplay": {
-          "delay": {{ section.settings.slider_autoplay_interval | times: 1000 }}
-        }
+        "autoplay": { "delay": {{ section.settings.slider_autoplay_interval | times: 1000 }} }
       {%- elsif section.settings.text_block_behaviour == 'slider' -%}
         "slidesPerViewDesktop": 1,
         "loop": true,
-        "autoplay": {
-          "delay": {{ section.settings.slider_autoplay_interval | times: 1000 }}
-        }
+        "autoplay": { "delay": {{ section.settings.slider_autoplay_interval | times: 1000 }} }
       {%- else -%}
         "loop": false,
         "autoplay": false
       {%- endif -%}
     }'
   {% endcapture %}
-{% endif %}
+{%- endunless -%}
 
-{%- capture announcement_bar_slideshow -%}
-  {%- if text_slide_blocks.size == 1 -%}
+{%- comment -%} Build the slideshow markup once, reuse for first text-slide block {%- endcomment -%}
+{%- capture slideshow_markup -%}
+  {%- if text_blocks.size == 1 -%}
     <div class="announcement-bar__slider">
       <div class="announcement-bar__text-content text--label icon">
-        {% render 'icon', icon_name: text_slide_blocks.first.settings.icon, custom_icon: text_slide_blocks.first.settings.custom_icon %}
-        {{ text_slide_blocks.first.settings.content }}
+        {% render 'icon', icon_name: text_blocks.first.settings.icon, custom_icon: text_blocks.first.settings.custom_icon %}
+        {{ text_blocks.first.settings.content }}
       </div>
     </div>
   {%- else -%}
-    {% if section.settings.text_block_behaviour != 'marquee' %}
+    {%- unless is_marquee -%}
       <announcement-bar-slider
         class='swiper announcement-bar__slider'
         data-autoplay-interval='{{- section.settings.slider_autoplay_interval | times: 1000 -}}'
-        {{ data_swiper_options | replace: ' ', '' | strip_newlines }}
+        {{ swiper_config_attr | replace: ' ', '' | strip_newlines }}
       >
         <div class='swiper-wrapper'>
-          {%- for block in text_slide_blocks -%}
-            {%- if block.settings.content == blank -%}
-              {%- continue -%}
-            {%- endif -%}
+          {%- for blk in text_blocks -%}
+            {%- if blk.settings.content == blank -%}{%- continue -%}{%- endif -%}
             <div class='swiper-slide'>
               <div class="announcement-bar__text-content text--label icon">
-                {% render 'icon', icon_name: block.settings.icon, custom_icon: block.settings.custom_icon %}
-                {{ block.settings.content }}
+                {% render 'icon', icon_name: blk.settings.icon, custom_icon: blk.settings.custom_icon %}
+                {{ blk.settings.content }}
               </div>
             </div>
           {%- endfor -%}
         </div>
       </announcement-bar-slider>
-    {% else %}
+    {%- else -%}
       <div class="announcement_bar__marquee marquee--hover-pause enable-animation">
         {% capture marquee_items %}
-          {%- for block in text_slide_blocks -%}
-            {%- if block.settings.content == blank -%}
-              {%- continue -%}
-            {%- endif -%}
+          {%- for blk in text_blocks -%}
+            {%- if blk.settings.content == blank -%}{%- continue -%}{%- endif -%}
             <li class="marquee__item icon text--label">
-              {% render 'icon', icon_name: block.settings.icon, custom_icon: block.settings.custom_icon %}
-              {{ block.settings.content }}
+              {% render 'icon', icon_name: blk.settings.icon, custom_icon: blk.settings.custom_icon %}
+              {{ blk.settings.content }}
             </li>
           {%- endfor -%}
         {% endcapture %}
-        {% liquid
-          assign marquee_items_size = text_slide_blocks.size | times: 1.0
-          assign marquee_items_size_shoud_be = 12
-          assign lower_limit = 1
-          assign upper_limit = marquee_items_size_shoud_be | divided_by: marquee_items_size | ceil
-        %}
+        {%- liquid
+          assign group_count = text_blocks.size | times: 1.0
+          assign target = 12
+          assign lo = 1
+          assign hi = target | divided_by: group_count | ceil
+        -%}
         <ul class="marquee__content">
-          {% for i in (lower_limit..upper_limit) -%}
+          {% for i in (lo..hi) -%}
             {{ marquee_items }}
           {%- endfor %}
         </ul>
         <ul aria-hidden="true" class="marquee__content">
-          {% for i in (lower_limit..upper_limit) -%}
+          {% for i in (lo..hi) -%}
             {{ marquee_items }}
           {%- endfor %}
         </ul>
       </div>
-    {% endif %}
+    {%- endunless -%}
   {%- endif -%}
 {%- endcapture -%}
 
@@ -128,23 +121,23 @@
   <div class="announcement-bar bar js-announcement-bar">
     <div class='container {{ section.settings.section_width }}'>
       <div class='announcement-bar__wrapper'>
-        {%- assign text_slide_count = 0 -%}
+        {%- assign slide_rendered = false -%}
         {% for block in section.blocks %}
-
-          {% liquid
-            assign show_on_class = block.settings.show_on
-            if show_on_class == 'mobile'
-              assign show_on_class = 'large-up-hide'
-            elsif show_on_class == 'desktop'
-              assign show_on_class = 'small-hide medium-hide'
-            else
-              assign show_on_class = ''
-            endif
-          %}
+          {%- liquid
+            assign visibility_class = block.settings.show_on
+            case visibility_class
+              when 'mobile'
+                assign visibility_class = 'large-up-hide'
+              when 'desktop'
+                assign visibility_class = 'small-hide medium-hide'
+              else
+                assign visibility_class = ''
+            endcase
+          -%}
 
           {%- case block.type -%}
             {%- when 'link' -%}
-              <a href="{{ block.settings.link }}" class="announcement-bar__link icon text--link {{ show_on_class }}" aria-label="{{ block.settings.link_label }}">
+              <a href="{{ block.settings.link }}" class="announcement-bar__link icon text--link {{ visibility_class }}" aria-label="{{ block.settings.link_label }}">
                 {% liquid
                   assign icon_alt = block.settings.link_label
                   render 'icon', icon_name: block.settings.icon, custom_icon: block.settings.custom_icon, icon_alt: icon_alt
@@ -153,17 +146,15 @@
               </a>
 
             {%- when 'text-slide' -%}
-              {%- assign text_slide_count = text_slide_count | plus: 1 -%}
-              {%- if text_slide_count == 1 -%}
-                {%- if block.settings.content == blank -%}
-                  {%- continue -%}
+              {%- unless slide_rendered -%}
+                {%- if block.settings.content != blank -%}
+                  {{ slideshow_markup }}
+                  {%- assign slide_rendered = true -%}
                 {%- endif -%}
-
-                {{ announcement_bar_slideshow }}
-              {%- endif -%}
+              {%- endunless -%}
 
             {%- when 'timer' -%}
-              <div class="announcement-bar__timer text--label {{ show_on_class }}" {{ block.shopify_attributes }}>
+              <div class="announcement-bar__timer text--label {{ visibility_class }}" {{ block.shopify_attributes }}>
                 {%- render 'countdown-timer',
                   id: block.id,
                   column_type: 'row',
@@ -183,8 +174,9 @@
                   timer_layout: 2
                 -%}
               </div>
+
             {%- when 'localization' -%}
-              <div class="announcement-bar__localization {{ show_on_class }}" {{ block.shopify_attributes }}>
+              <div class="announcement-bar__localization {{ visibility_class }}" {{ block.shopify_attributes }}>
                 <menu-drawer>
                   {%- render 'country-drawer', append_id: 'announcement-' | append: block.id -%}
                 </menu-drawer>
@@ -207,28 +199,16 @@
       "id": "text_block_behaviour",
       "label": "t:sections.announcement-bar.settings.text_block_behaviour.label",
       "options": [
-        {
-          "value": "static",
-          "label": "t:sections.announcement-bar.settings.text_block_behaviour.options.options__1.label"
-        },
-        {
-          "value": "marquee",
-          "label": "t:sections.announcement-bar.settings.text_block_behaviour.options.options__2.label"
-        },
-        {
-          "value": "slider",
-          "label": "t:sections.announcement-bar.settings.text_block_behaviour.options.options__3.label"
-        }
+        { "value": "static", "label": "t:sections.announcement-bar.settings.text_block_behaviour.options.options__1.label" },
+        { "value": "marquee", "label": "t:sections.announcement-bar.settings.text_block_behaviour.options.options__2.label" },
+        { "value": "slider", "label": "t:sections.announcement-bar.settings.text_block_behaviour.options.options__3.label" }
       ],
       "default": "slider"
     },
     {
       "type": "range",
       "id": "slider_autoplay_interval",
-      "min": 1,
-      "max": 10,
-      "step": 1,
-      "unit": "s",
+      "min": 1, "max": 10, "step": 1, "unit": "s",
       "label": "t:sections.announcement-bar.settings.slider_autoplay_interval.label",
       "default": 3
     },
@@ -242,18 +222,9 @@
       "id": "font_weight",
       "label": "t:sections.global.element.font.weight.label",
       "options": [
-        {
-          "value": "400",
-          "label": "t:sections.global.element.font.weight.options.normal.label"
-        },
-        {
-          "value": "500",
-          "label": "t:sections.global.element.font.weight.options.medium.label"
-        },
-        {
-          "value": "700",
-          "label": "t:sections.global.element.font.weight.options.bold.label"
-        }
+        { "value": "400", "label": "t:sections.global.element.font.weight.options.normal.label" },
+        { "value": "500", "label": "t:sections.global.element.font.weight.options.medium.label" },
+        { "value": "700", "label": "t:sections.global.element.font.weight.options.bold.label" }
       ],
       "default": "700"
     },
@@ -267,18 +238,9 @@
       "id": "section_width",
       "label": "t:sections.global.section_width.label",
       "options": [
-        {
-          "value": "max-w-page",
-          "label": "t:sections.global.section_width.options.page.label"
-        },
-        {
-          "value": "max-w-fluid",
-          "label": "t:sections.global.section_width.options.fluid.label"
-        },
-        {
-          "value": "max-w-full",
-          "label": "t:sections.global.section_width.options.full.label"
-        }
+        { "value": "max-w-page", "label": "t:sections.global.section_width.options.page.label" },
+        { "value": "max-w-fluid", "label": "t:sections.global.section_width.options.fluid.label" },
+        { "value": "max-w-full", "label": "t:sections.global.section_width.options.full.label" }
       ],
       "default": "max-w-fluid"
     },
@@ -300,46 +262,16 @@
           "id": "show_on",
           "label": "t:sections.global.settings.show_on.label",
           "options": [
-            {
-              "value": "desktop",
-              "label": "t:sections.global.settings.show_on.options.desktop.label"
-            },
-            {
-              "value": "mobile",
-              "label": "t:sections.global.settings.show_on.options.mobile.label"
-            },
-            {
-              "value": "both",
-              "label": "t:sections.global.settings.show_on.options.both.label"
-            }
+            { "value": "desktop", "label": "t:sections.global.settings.show_on.options.desktop.label" },
+            { "value": "mobile", "label": "t:sections.global.settings.show_on.options.mobile.label" },
+            { "value": "both", "label": "t:sections.global.settings.show_on.options.both.label" }
           ],
           "default": "desktop"
         },
-        {
-          "type": "text",
-          "id": "link_label",
-          "label": "t:sections.global.element.link_label.label",
-          "default": "Link 1"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "t:sections.global.element.link.label",
-          "default": "/"
-        },
-        {
-          "type": "text",
-          "id": "icon",
-          "label": "t:sections.global.element.icon.label",
-          "info": "t:sections.global.element.icon.info",
-          "default": "theme-box"
-        },
-        {
-          "type": "image_picker",
-          "id": "custom_icon",
-          "label": "t:sections.global.element.icon.custom_icon.label",
-          "info": "t:sections.global.element.icon.custom_icon.info"
-        }
+        { "type": "text", "id": "link_label", "label": "t:sections.global.element.link_label.label", "default": "Link 1" },
+        { "type": "url", "id": "link", "label": "t:sections.global.element.link.label", "default": "/" },
+        { "type": "text", "id": "icon", "label": "t:sections.global.element.icon.label", "info": "t:sections.global.element.icon.info", "default": "theme-box" },
+        { "type": "image_picker", "id": "custom_icon", "label": "t:sections.global.element.icon.custom_icon.label", "info": "t:sections.global.element.icon.custom_icon.info" }
       ]
     },
     {
@@ -352,147 +284,42 @@
           "id": "show_on",
           "label": "t:sections.global.settings.show_on.label",
           "options": [
-            {
-              "value": "desktop",
-              "label": "t:sections.global.settings.show_on.options.desktop.label"
-            },
-            {
-              "value": "mobile",
-              "label": "t:sections.global.settings.show_on.options.mobile.label"
-            },
-            {
-              "value": "both",
-              "label": "t:sections.global.settings.show_on.options.both.label"
-            }
+            { "value": "desktop", "label": "t:sections.global.settings.show_on.options.desktop.label" },
+            { "value": "mobile", "label": "t:sections.global.settings.show_on.options.mobile.label" },
+            { "value": "both", "label": "t:sections.global.settings.show_on.options.both.label" }
           ],
           "default": "desktop"
         },
-        {
-          "type": "number",
-          "id": "timer_year",
-          "label": "t:sections.global.settings.timer.settings.timer_year.label",
-          "default": 2024
-        },
+        { "type": "number", "id": "timer_year", "label": "t:sections.global.settings.timer.settings.timer_year.label", "default": 2024 },
         {
           "type": "select",
           "id": "timer_month",
           "label": "t:sections.global.settings.timer.settings.timer_month.label",
           "options": [
-            {
-              "value": "01",
-              "label": "t:sections.global.settings.timer.settings.timer_month.options.options__1"
-            },
-            {
-              "value": "02",
-              "label": "t:sections.global.settings.timer.settings.timer_month.options.options__2"
-            },
-            {
-              "value": "03",
-              "label": "t:sections.global.settings.timer.settings.timer_month.options.options__3"
-            },
-            {
-              "value": "04",
-              "label": "t:sections.global.settings.timer.settings.timer_month.options.options__4"
-            },
-            {
-              "value": "05",
-              "label": "t:sections.global.settings.timer.settings.timer_month.options.options__5"
-            },
-            {
-              "value": "06",
-              "label": "t:sections.global.settings.timer.settings.timer_month.options.options__6"
-            },
-            {
-              "value": "07",
-              "label": "t:sections.global.settings.timer.settings.timer_month.options.options__7"
-            },
-            {
-              "value": "08",
-              "label": "t:sections.global.settings.timer.settings.timer_month.options.options__8"
-            },
-            {
-              "value": "09",
-              "label": "t:sections.global.settings.timer.settings.timer_month.options.options__9"
-            },
-            {
-              "value": "10",
-              "label": "t:sections.global.settings.timer.settings.timer_month.options.options__10"
-            },
-            {
-              "value": "11",
-              "label": "t:sections.global.settings.timer.settings.timer_month.options.options__11"
-            },
-            {
-              "value": "12",
-              "label": "t:sections.global.settings.timer.settings.timer_month.options.options__12"
-            }
+            { "value": "01", "label": "t:sections.global.settings.timer.settings.timer_month.options.options__1" },
+            { "value": "02", "label": "t:sections.global.settings.timer.settings.timer_month.options.options__2" },
+            { "value": "03", "label": "t:sections.global.settings.timer.settings.timer_month.options.options__3" },
+            { "value": "04", "label": "t:sections.global.settings.timer.settings.timer_month.options.options__4" },
+            { "value": "05", "label": "t:sections.global.settings.timer.settings.timer_month.options.options__5" },
+            { "value": "06", "label": "t:sections.global.settings.timer.settings.timer_month.options.options__6" },
+            { "value": "07", "label": "t:sections.global.settings.timer.settings.timer_month.options.options__7" },
+            { "value": "08", "label": "t:sections.global.settings.timer.settings.timer_month.options.options__8" },
+            { "value": "09", "label": "t:sections.global.settings.timer.settings.timer_month.options.options__9" },
+            { "value": "10", "label": "t:sections.global.settings.timer.settings.timer_month.options.options__10" },
+            { "value": "11", "label": "t:sections.global.settings.timer.settings.timer_month.options.options__11" },
+            { "value": "12", "label": "t:sections.global.settings.timer.settings.timer_month.options.options__12" }
           ],
           "default": "01"
         },
-        {
-          "type": "range",
-          "id": "timer_day",
-          "label": "t:sections.global.settings.timer.settings.timer_day.label",
-          "min": 1,
-          "max": 31,
-          "step": 1,
-          "default": 1
-        },
-        {
-          "type": "range",
-          "id": "timer_hour",
-          "label": "t:sections.global.settings.timer.settings.timer_hour.label",
-          "min": 0,
-          "max": 23,
-          "step": 1,
-          "default": 0,
-          "unit": "h"
-        },
-        {
-          "type": "range",
-          "id": "timer_minute",
-          "label": "t:sections.global.settings.timer.settings.timer_minute.label",
-          "min": 0,
-          "max": 59,
-          "step": 1,
-          "default": 0,
-          "unit": "m"
-        },
-        {
-          "type": "inline_richtext",
-          "id": "timer_end_message",
-          "label": "t:sections.callout-banner.settings.timer_end_message.label",
-          "info": "t:sections.callout-banner.settings.timer_end_message.info",
-          "default": "Sale has ended"
-        },
-        {
-          "type": "header",
-          "content": "t:sections.global.header.parts_display_settings.content"
-        },
-        {
-          "type": "checkbox",
-          "id": "show_timer_days",
-          "label": "t:sections.global.settings.timer.settings.show_timer_days.label",
-          "default": true
-        },
-        {
-          "type": "checkbox",
-          "id": "show_timer_hours",
-          "label": "t:sections.global.settings.timer.settings.show_timer_hours.label",
-          "default": true
-        },
-        {
-          "type": "checkbox",
-          "id": "show_timer_minutes",
-          "label": "t:sections.global.settings.timer.settings.show_timer_minutes.label",
-          "default": true
-        },
-        {
-          "type": "checkbox",
-          "id": "show_timer_seconds",
-          "label": "t:sections.global.settings.timer.settings.show_timer_seconds.label",
-          "default": true
-        }
+        { "type": "range", "id": "timer_day", "label": "t:sections.global.settings.timer.settings.timer_day.label", "min": 1, "max": 31, "step": 1, "default": 1 },
+        { "type": "range", "id": "timer_hour", "label": "t:sections.global.settings.timer.settings.timer_hour.label", "min": 0, "max": 23, "step": 1, "default": 0, "unit": "h" },
+        { "type": "range", "id": "timer_minute", "label": "t:sections.global.settings.timer.settings.timer_minute.label", "min": 0, "max": 59, "step": 1, "default": 0, "unit": "m" },
+        { "type": "inline_richtext", "id": "timer_end_message", "label": "t:sections.callout-banner.settings.timer_end_message.label", "info": "t:sections.callout-banner.settings.timer_end_message.info", "default": "Sale has ended" },
+        { "type": "header", "content": "t:sections.global.header.parts_display_settings.content" },
+        { "type": "checkbox", "id": "show_timer_days", "label": "t:sections.global.settings.timer.settings.show_timer_days.label", "default": true },
+        { "type": "checkbox", "id": "show_timer_hours", "label": "t:sections.global.settings.timer.settings.show_timer_hours.label", "default": true },
+        { "type": "checkbox", "id": "show_timer_minutes", "label": "t:sections.global.settings.timer.settings.show_timer_minutes.label", "default": true },
+        { "type": "checkbox", "id": "show_timer_seconds", "label": "t:sections.global.settings.timer.settings.show_timer_seconds.label", "default": true }
       ]
     },
     {
@@ -505,18 +332,9 @@
           "id": "show_on",
           "label": "t:sections.global.settings.show_on.label",
           "options": [
-            {
-              "value": "desktop",
-              "label": "t:sections.global.settings.show_on.options.desktop.label"
-            },
-            {
-              "value": "mobile",
-              "label": "t:sections.global.settings.show_on.options.mobile.label"
-            },
-            {
-              "value": "both",
-              "label": "t:sections.global.settings.show_on.options.both.label"
-            }
+            { "value": "desktop", "label": "t:sections.global.settings.show_on.options.desktop.label" },
+            { "value": "mobile", "label": "t:sections.global.settings.show_on.options.mobile.label" },
+            { "value": "both", "label": "t:sections.global.settings.show_on.options.both.label" }
           ],
           "default": "desktop"
         }
@@ -527,37 +345,14 @@
       "name": "t:sections.announcement-bar.blocks.text-slide.name",
       "limit": 5,
       "settings": [
-        {
-          "type": "richtext",
-          "id": "content",
-          "label": "t:sections.announcement-bar.blocks.text-slide.settings.content.label",
-          "default": "<p>Welcome to our store</p>"
-        },
-        {
-          "type": "text",
-          "id": "icon",
-          "label": "t:sections.global.element.icon.label",
-          "info": "t:sections.global.element.icon.info",
-          "default": "theme-box"
-        },
-        {
-          "type": "image_picker",
-          "id": "custom_icon",
-          "label": "t:sections.global.element.icon.custom_icon.label",
-          "info": "t:sections.global.element.icon.custom_icon.info"
-        }
+        { "type": "richtext", "id": "content", "label": "t:sections.announcement-bar.blocks.text-slide.settings.content.label", "default": "<p>Welcome to our store</p>" },
+        { "type": "text", "id": "icon", "label": "t:sections.global.element.icon.label", "info": "t:sections.global.element.icon.info", "default": "theme-box" },
+        { "type": "image_picker", "id": "custom_icon", "label": "t:sections.global.element.icon.custom_icon.label", "info": "t:sections.global.element.icon.custom_icon.info" }
       ]
     }
   ],
   "presets": [
-    {
-      "name": "t:sections.announcement-bar.name",
-      "blocks": [
-        {
-          "type": "text-slide"
-        }
-      ]
-    }
+    { "name": "t:sections.announcement-bar.name", "blocks": [{ "type": "text-slide" }] }
   ]
 }
 {% endschema %}

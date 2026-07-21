@@ -1,85 +1,59 @@
-{% comment %}
-  Renders text input form element
-  Accepts:
-  - id {String} ID of the input element
-  - label {String} Label of the input element
-  - type {String} Type of the input element
-  - name {String} Name of the input element
-  - placeholder {String} Placeholder of the input element
-  - value {String} Value of the input element
-  - required {Boolean} Whether the input element is required or not
-  - min {Integer} Minimum value of the input element
-  - max {Integer} Maximum value of the input element
-  - readonly {Boolean} Whether the input element is read only or not
-  - attr {String} Data attributes to be added to the input element
-  - message {String} Message to be displayed
-  - has_error {Boolean} Whether the input element has error or not
+{%- comment -%}
+  Text input field renderer.
+  params: id, label, hide_label, type, name, placeholder, value,
+          required, min, max, readonly, attr, message, has_error,
+          checked, class
+{%- endcomment -%}
 
-  Usage:
-  {%- render 'text-input',
-    id: 'my-id',
-    label: 'My Label',
-    type: 'text',
-    name: 'my-name',
-    placeholder: 'My Placeholder',
-    value: 'My Value',
-    required: true,
-    min: 0,
-    max: 100,
-    attr: 'data-attr="value"'
-  -%}
-{% endcomment %}
-
-{%-
-  liquid
-  assign class = class | default: false
-  assign id = id | default: false
-  assign label = label | default: false
-  assign hide_label = hide_label | default: false
-  assign type = type | default: 'text'
-  assign name = name | default: false
-  assign placeholder = placeholder | default: false
-  assign value = value | default: false
-  assign required = required | default: false
-  assign min = min | default: false
-  assign max = max | default: false
-  assign readonly = readonly | default: false
-  assign attr = attr | default: false
-  assign message = message | default: false
-  assign has_error = has_error | default: false
-  assign checked = checked | default: false
+{%- liquid
+  assign field_class = class | default: false
+  assign field_id = id | default: false
+  assign field_label = label | default: false
+  assign label_hidden = hide_label | default: false
+  assign field_type = type | default: 'text'
+  assign field_name = name | default: false
+  assign field_placeholder = placeholder | default: false
+  assign field_value = value | default: false
+  assign field_required = required | default: false
+  assign field_min = min | default: false
+  assign field_max = max | default: false
+  assign field_readonly = readonly | default: false
+  assign field_attr = attr | default: false
+  assign field_message = message | default: false
+  assign field_has_error = has_error | default: false
+  assign field_checked = checked | default: false
 -%}
 
-<div class="field{% if has_error %} has-error{% endif %}{% if class %} {{- class -}}{% endif %}" data-input-wrapper>
-  {%- if label and id -%}
-    <label for="{{- id -}}" class="field__label{% if hide_label %} visually-hidden{% endif %}">{{- label -}}</label>
+<div class="field{% if field_has_error %} has-error{% endif %}{% if field_class %} {{- field_class -}}{% endif %}" data-input-wrapper>
+  {%- if field_label and field_id -%}
+    <label for="{{- field_id -}}" class="field__label{% if label_hidden %} visually-hidden{% endif %}">{{- field_label -}}</label>
   {%- endif -%}
   <input
-    type="{{- type -}}"
-    {% if id %}id="{{- id -}}"{% endif %}
-    {% if name %}name="{{- name -}}"{% endif %}
-    {% if placeholder %}placeholder="{{- placeholder -}}"{% endif %}
-    {% if value %}value="{{- value -}}"{% endif %}
-    {% if required %}required{% endif %}
-    {% if readonly %}readonly{% endif %}
-    {% if min %}min="{{- min -}}"{% endif %}
-    {% if max %}max="{{- max -}}"{% endif %}
-    {% if required and type == 'password' %}minlength="5"{% endif %}
-    {% if required and type == 'email' %}pattern="^([a-zA-Z0-9_\-\+\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,9})$"{% endif %}
-    {% if attr %}{{ attr }}{% endif %}
-    {% if checked %}checked{% endif %}
+    type="{{- field_type -}}"
+    {%- if field_id %} id="{{- field_id -}}"{% endif -%}
+    {%- if field_name %} name="{{- field_name -}}"{% endif -%}
+    {%- if field_placeholder %} placeholder="{{- field_placeholder -}}"{% endif -%}
+    {%- if field_value %} value="{{- field_value -}}"{% endif -%}
+    {%- if field_required %} required{% endif -%}
+    {%- if field_readonly %} readonly{% endif -%}
+    {%- if field_min %} min="{{- field_min -}}"{% endif -%}
+    {%- if field_max %} max="{{- field_max -}}"{% endif -%}
+    {%- if field_required and field_type == 'password' %} minlength="5"{% endif -%}
+    {%- if field_required and field_type == 'email' %} pattern="^([a-zA-Z0-9_\-\+\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,9})$"{% endif -%}
+    {%- if field_attr %} {{ field_attr }}{% endif -%}
+    {%- if field_checked %} checked{% endif -%}
     class="field__input{{ input_class }}"
   />
 
   <span
-    class="field__message{% unless message %} hidden{% endunless %}"
+    class="field__message{% unless field_message %} hidden{% endunless %}"
     data-message
-    {% if message and has_error == false %}
+    {% if field_message and field_has_error == false %}
       tabindex="-1"
       autofocus
     {% endif %}
-  >{%- if message -%}{{- message -}}{%- endif -%}</span>
+  >{%- if field_message -%}{{- field_message -}}{%- endif -%}</span>
 
-  {%- if message -%}
+  {%- if field_message -%}
   {%- endif -%}
 </div>

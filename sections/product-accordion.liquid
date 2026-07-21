@@ -1,76 +1,3 @@
-{% stylesheet %}
-.right-accordion-container {
-  display: flex;
-  justify-content: flex-end;
-  padding: 1rem 0;
-  
-    max-width: 1600px;
-    margin-right: auto;
-    margin-left: auto;
-}
-
-.right-accordion {
-    width: 48%;
-    padding-right: 82px;
-}
-
-.accordion-item {
-  border-bottom: 1px dashed #ccc;
-  border-bottom-style: dashed;
-  border-bottom-width: 2px;
-}
-
-
-.accordion-toggle {
-  width: 100%;
-  padding: 1rem 0;
-  background: none;
-  border: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-}
-
-.accordion-title {
-  
-  font-weight: 500;
-  color: #2A2A2A;
-  font-size: 18px;
-}
-
-.accordion-icon {
-  font-size: 25px;
-  font-weight: 400;
-  color: #2A2A2A;
-  transition: transform 0.2s ease;
-}
-
-.accordion-content {
-  display: none;
-  padding: 0 0 1rem 0;
-  font-size: 18px;
-}
-
-.accordion-item.active .accordion-content {
-  display: block;
-}
-  /* ✅ Mobile-specific adjustments */
-@media (max-width: 768px) {
-  .right-accordion {
-    width: 100%;
-    padding-right: 10px;
-      padding-left: 10px;
-
-  }
-
-  .right-accordion-container {
-    justify-content: center;
-    padding: 1rem;
-  }
-}
-{% endstylesheet %}
-
 <div class="right-accordion-container">
   <div class="right-accordion">
     <!-- Product Info -->
@@ -111,24 +38,97 @@
 
 {% javascript %}
 document.addEventListener("DOMContentLoaded", function () {
-  const items = document.querySelectorAll(".right-accordion .accordion-item");
-  items.forEach((item) => {
-    const toggle = item.querySelector(".accordion-toggle");
-    const icon = item.querySelector(".accordion-icon");
-    toggle.addEventListener("click", () => {
-      const isActive = item.classList.contains("active");
-      items.forEach(i => {
-        i.classList.remove("active");
-        i.querySelector(".accordion-icon").textContent = "+";
+  const b3_panels = document.querySelectorAll(".right-accordion .accordion-item");
+  b3_panels.forEach((b3_node) => {
+    const b3_trigger = b3_node.querySelector(".accordion-toggle");
+    const b3_marker = b3_node.querySelector(".accordion-icon");
+    b3_trigger.addEventListener("click", () => {
+      const b3_wasOpen = b3_node.classList.contains("active");
+      b3_panels.forEach(b3_other => {
+        b3_other.classList.remove("active");
+        b3_other.querySelector(".accordion-icon").textContent = "+";
       });
-      if (!isActive) {
-        item.classList.add("active");
-        icon.textContent = "–";
+      if (!b3_wasOpen) {
+        b3_node.classList.add("active");
+        b3_marker.textContent = "–";
       }
     });
   });
 });
 {% endjavascript %}
+
+{% stylesheet %}
+.accordion-item {
+  border-bottom: 1px dashed #ccc;
+  border-bottom-style: dashed;
+  border-bottom-width: 2px;
+}
+
+.accordion-title {
+  
+  font-weight: 500;
+  color: #2A2A2A;
+  font-size: 18px;
+}
+
+.accordion-content {
+  display: none;
+  padding: 0 0 1rem 0;
+  font-size: 18px;
+}
+
+.accordion-item.active .accordion-content {
+  display: block;
+}
+
+.accordion-toggle {
+  width: 100%;
+  padding: 1rem 0;
+  background: none;
+  border: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.accordion-icon {
+  font-size: 25px;
+  font-weight: 400;
+  color: #2A2A2A;
+  transition: transform 0.2s ease;
+}
+
+.right-accordion {
+    width: 48%;
+    padding-right: 82px;
+}
+
+  /* ✅ Mobile-specific adjustments */
+@media (max-width: 768px) {
+  .right-accordion {
+    width: 100%;
+    padding-right: 10px;
+      padding-left: 10px;
+
+  }
+
+  .right-accordion-container {
+    justify-content: center;
+    padding: 1rem;
+  }
+}
+
+.right-accordion-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 0;
+  
+    max-width: 1600px;
+    margin-right: auto;
+    margin-left: auto;
+}
+{% endstylesheet %}
 
 {% schema %}
 {

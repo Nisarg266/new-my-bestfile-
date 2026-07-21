@@ -41,6 +41,12 @@
 }
 {% endschema %}
 
+{%- assign s6_cfg = section.settings -%}
+{%- assign s6_bg_desktop = s6_cfg.background_image_desktop -%}
+{%- assign s6_bg_mobile = s6_cfg.background_image_mobile -%}
+{%- assign s6_has_link = false -%}
+{%- if s6_cfg.button_link != blank -%}{%- assign s6_has_link = true -%}{%- endif -%}
+
 {% style %}
 .fuel-from-inside-wrapper {
   display: flex;
@@ -91,7 +97,7 @@
     padding: 60px 20px;
     justify-content: center;
     text-align: center;
-    background-image: url('{{ section.settings.background_image_mobile | img_url: "master" }}') !important;
+    background-image: url('{{ s6_bg_mobile | img_url: "master" }}') !important;
   }
 
   .fuel-from-inside-content {
@@ -104,13 +110,13 @@
 
 <div
   class="fuel-from-inside-wrapper"
-  style="background-image: url('{{ section.settings.background_image_desktop | img_url: "master" }}');"
+  style="background-image: url('{{ s6_bg_desktop | img_url: "master" }}');"
 >
   <div class="fuel-from-inside-content">
-    <h2>{{ section.settings.main_heading }}</h2>
-    <p>{{ section.settings.subheading }}</p>
-    {% if section.settings.button_link != blank %}
-      <a href="{{ section.settings.button_link }}">{{ section.settings.button_text }}</a>
-    {% endif %}
+    <h2>{{ s6_cfg.main_heading }}</h2>
+    <p>{{ s6_cfg.subheading }}</p>
+    {%- if s6_has_link -%}
+      <a href="{{ s6_cfg.button_link }}">{{ s6_cfg.button_text }}</a>
+    {%- endif -%}
   </div>
 </div>

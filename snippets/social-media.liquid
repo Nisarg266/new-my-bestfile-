@@ -1,51 +1,40 @@
 {%- comment -%}
-  renders social media links based on the settings in the theme editor.
-
-  usage:
-  {% render 'social-media', item_tag: 'li', in_new_tab: true, item_icon: true %}
-
-  mandatory parameters:
-  - item_tag: the tag to wrap the social media link in. // 'li', 'div', 'span', etc. (default: 'li')
-  - in_new_tab: whether the links should open in a new tab. // true or false (default: false)
-  - item_icon: whether the links should have an icon. // true or false (default: true)
-
-  optional parameters:
-  - none
+  Social media link list from theme settings.
+  params: item_tag (default 'li'), in_new_tab (default false), item_icon (default true)
 {%- endcomment -%}
 
 {%- liquid
-  assign item_tag = item_tag | default: 'li'
-  assign in_new_tab = in_new_tab | default: false
-  assign item_icon = item_icon
+  assign soc_tag = item_tag | default: 'li'
+  assign soc_blank = in_new_tab | default: false
+  assign soc_show_icon = item_icon
 
-  assign social_media_items = 'Facebook,Instagram,YouTube,TikTok,X,Linkedin,Twitter,Pinterest,Snapchat,Vimeo' | split: ','
+  assign platforms = 'Facebook,Instagram,YouTube,TikTok,X,Linkedin,Twitter,Pinterest,Snapchat,Vimeo' | split: ','
 
-  for item in social_media_items
-    assign item_handle = item | handleize
-    assign item_settings_handle = 'social_' | append: item_handle | append: '_link'
-    assign item_icon_name = 'brand-' | append: item_handle
+  for platform in platforms
+    assign platform_handle = platform | handleize
+    assign setting_key = 'social_' | append: platform_handle | append: '_link'
+    assign icon_id = 'brand-' | append: platform_handle
 
-    if settings[item_settings_handle] == blank
+    if settings[setting_key] == blank
       continue
     endif
 
-    assign item_url = settings[item_settings_handle]
+    assign link_url = settings[setting_key]
 
-    if in_new_tab
-      assign item_target = ' target="_blank" rel="noopener noreferrer"'
+    if soc_blank
+      assign link_target = ' target="_blank" rel="noopener noreferrer"'
     else
-      assign item_target = ''
+      assign link_target = ''
     endif
 
-    echo '<' | append: item_tag | append: '>'
-    echo '<a href="' | append: item_url | append: '" title="' | append: item | append: '" ' | append: item_target | append: '>'
-      if item_icon
-        render 'icon', icon_name: item_icon_name
-      else
-        echo item
-      endif
+    echo '<' | append: soc_tag | append: '>'
+    echo '<a href="' | append: link_url | append: '" title="' | append: platform | append: '" ' | append: link_target | append: '>'
+    if soc_show_icon
+      render 'icon', icon_name: icon_id
+    else
+      echo platform
+    endif
     echo '</a>'
-    echo '</' | append: item_tag | append: '>'
-
+    echo '</' | append: soc_tag | append: '>'
   endfor
 -%}

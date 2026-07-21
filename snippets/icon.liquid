@@ -1,14 +1,13 @@
 {%- liquid
-  assign icon_class = 'icon ' | append: class | strip
-  assign icon_stroke_width = settings.icons_stroke_width | times: 1.0
-  assign icon_corner_shape = settings.icons_corner_shape
+  assign svg_line_width = settings.icons_stroke_width | times: 1.0
+  assign svg_line_caps = settings.icons_corner_shape
 -%}
 
 {%- capture icon -%}
   {%- case icon_name -%}
     {%- when 'theme-3d-model' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M17.7426 6.2302L20 7.5V10M20 14V16.5L17.7426 17.7698M14.1791 19.7743L12 21L9.82092 19.7743M6.25741 17.7698L4 16.5V14M4 10V7.5L6.25741 6.23021M9.82093 4.22573L12 3L14.1791 4.22573M12 18V20.5M12 6V3.5M17.4019 9L19.5 7.78868M6.59808 15L4.5 16.2113M17.4019 15L19.5 16.2113M6.59808 9L4.5 7.78868M12 12V14M12 12L10.2679 11M12 12L13.7321 11" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M17.7426 6.2302L20 7.5V10M20 14V16.5L17.7426 17.7698M14.1791 19.7743L12 21L9.82092 19.7743M6.25741 17.7698L4 16.5V14M4 10V7.5L6.25741 6.23021M9.82093 4.22573L12 3L14.1791 4.22573M12 18V20.5M12 6V3.5M17.4019 9L19.5 7.78868M6.59808 15L4.5 16.2113M17.4019 15L19.5 16.2113M6.59808 9L4.5 7.78868M12 12V14M12 12L10.2679 11M12 12L13.7321 11" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-bag' -%}
       <svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 23 30" fill="none">
@@ -24,43 +23,43 @@
 </svg>
     {%- when 'theme-compare' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8 21L4 17L8 13M16 11L20 7L16 3M5 17H20M4 7H19" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M8 21L4 17L8 13M16 11L20 7L16 3M5 17H20M4 7H19" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-arrow' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M14 6L20 12L14 18M19 12H4" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M14 6L20 12L14 18M19 12H4" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-check' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3 15L9.29412 20L21 4" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M3 15L9.29412 20L21 4" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-check-small' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M7 13L10 16L17 8" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M7 13L10 16L17 8" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-check-circle' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 9.5L10.5 15L8.5 13M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M15 9.5L10.5 15L8.5 13M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-chevron' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M9 4L17 12L9 20" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M9 4L17 12L9 20" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-chevron-small' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10 16L14 12L10 8" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M10 16L14 12L10 8" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-chevron-down' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4 9L12 17L20 9" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M4 9L12 17L20 9" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-close' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M5 5L19 19M19 5L5 19" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}"/>
+        <path d="M5 5L19 19M19 5L5 19" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}"/>
       </svg>
     {%- when 'theme-close-small' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8 8L16 16M16 8L8 16" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}"/>
+        <path d="M8 8L16 16M16 8L8 16" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}"/>
       </svg>
     {%- when 'theme-delete' -%}
       {%- comment -%}no stroke width{%- endcomment -%}
@@ -69,20 +68,20 @@
       </svg>
     {%- when 'theme-drag' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="8" y="5" width="1" height="14" fill="currentColor" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
-        <rect x="14" y="5" width="1" height="14" fill="currentColor" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <rect x="8" y="5" width="1" height="14" fill="currentColor" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
+        <rect x="14" y="5" width="1" height="14" fill="currentColor" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-expand' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10 10L4 4M4 10V4H10M14 14L20 20M20 14V20H14" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M10 10L4 4M4 10V4H10M14 14L20 20M20 14V20H14" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-filter' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20 4H4V8L10 14V21L14 20V14L20 8V4Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M20 4H4V8L10 14V21L14 20V14L20 8V4Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-heart' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 5.76835C18.1619 -0.481837 28.7252 11.1257 12 20.5C-4.72523 11.1257 5.83803 -0.481838 12 5.76835Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M12 5.76835C18.1619 -0.481837 28.7252 11.1257 12 20.5C-4.72523 11.1257 5.83803 -0.481838 12 5.76835Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-heart-filled' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -90,16 +89,16 @@
       </svg>
     {%- when 'theme-info-circle' -%}
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M11 11H12V16M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+      <path d="M11 11H12V16M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       <path d="M11.25 8C11.25 8.41421 11.5858 8.75 12 8.75C12.4142 8.75 12.75 8.41421 12.75 8C12.75 7.58579 12.4142 7.25 12 7.25C11.5858 7.25 11.25 7.58579 11.25 8Z" fill="currentColor" stroke="currentColor" stroke-width="0.5"/>
       </svg>
     {%- when 'theme-lock' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M16 10V7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7V10M12 14V17M5 10H19V21H5V10Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M16 10V7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7V10M12 14V17M5 10H19V21H5V10Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-menu' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3 12H21M3 5H21M3 19H21" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}"/>
+        <path d="M3 12H21M3 5H21M3 19H21" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}"/>
       </svg>
     {%- when 'theme-minus' -%}
 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
@@ -107,33 +106,33 @@
 </svg>
     {%- when 'theme-package' or 'theme-box' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M9 4V9H15V4M14 16H16M4 4V20H20V4H4Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M9 4V9H15V4M14 16H16M4 4V20H20V4H4Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-package-check' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M11 20H4V4H20V11M9 4V9H15V4M14.25 17.25L16.5 19.5L21 15" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M11 20H4V4H20V11M9 4V9H15V4M14.25 17.25L16.5 19.5L21 15" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-pause' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4 4H9V20H4V4Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
-        <path d="M14 4H19V20H14V4Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M4 4H9V20H4V4Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
+        <path d="M14 4H19V20H14V4Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-play' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M19.5 12.13L4 3V21.26L19.5 12.13Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M19.5 12.13L4 3V21.26L19.5 12.13Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-pin' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M14.4978 10C14.4978 11.3807 13.3785 12.5 11.9978 12.5C10.6171 12.5 9.4978 11.3807 9.4978 10C9.4978 8.61929 10.6171 7.5 11.9978 7.5C13.3785 7.5 14.4978 8.61929 14.4978 10Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
-        <path d="M19 10C19 15.866 12 21 12 21C12 21 5 15.866 5 10C5 6.13401 8.13401 3 12 3C15.866 3 19 6.13401 19 10Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M14.4978 10C14.4978 11.3807 13.3785 12.5 11.9978 12.5C10.6171 12.5 9.4978 11.3807 9.4978 10C9.4978 8.61929 10.6171 7.5 11.9978 7.5C13.3785 7.5 14.4978 8.61929 14.4978 10Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linejoin="{{- svg_line_caps -}}" />
+        <path d="M19 10C19 15.866 12 21 12 21C12 21 5 15.866 5 10C5 6.13401 8.13401 3 12 3C15.866 3 19 6.13401 19 10Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-paper-plane' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M14 22L20 4L2 10L11 13L14 22Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M14 22L20 4L2 10L11 13L14 22Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-phone' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M9 4H4V6C4 13.732 10.268 20 18 20H20V15L16 13L14.5 14.5C12 13.5 10.5 12 9.5 9.5L11 8L9 4Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M9 4H4V6C4 13.732 10.268 20 18 20H20V15L16 13L14.5 14.5C12 13.5 10.5 12 9.5 9.5L11 8L9 4Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-plus' -%}
      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
@@ -146,24 +145,24 @@
       </svg>
     {%- when 'theme-return' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M17.1265 6.87348C14.2952 4.04217 9.70478 4.04217 6.87348 6.87348C4.04217 9.70478 4.04217 14.2952 6.87348 17.1265C9.70478 19.9578 14.2952 19.9578 17.1265 17.1265C17.7603 16.4927 18.2522 15.7708 18.6023 15.0001" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
-        <path d="M19.25 19.25V15.75C19.25 15.1977 18.8023 14.75 18.25 14.75H14.75" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M17.1265 6.87348C14.2952 4.04217 9.70478 4.04217 6.87348 6.87348C4.04217 9.70478 4.04217 14.2952 6.87348 17.1265C9.70478 19.9578 14.2952 19.9578 17.1265 17.1265C17.7603 16.4927 18.2522 15.7708 18.6023 15.0001" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
+        <path d="M19.25 19.25V15.75C19.25 15.1977 18.8023 14.75 18.25 14.75H14.75" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-search' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20 20L16.05 16.05M18 11C18 14.866 14.866 18 11 18C7.13401 18 4 14.866 4 11C4 7.13401 7.13401 4 11 4C14.866 4 18 7.13401 18 11Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}"/>
+        <path d="M20 20L16.05 16.05M18 11C18 14.866 14.866 18 11 18C7.13401 18 4 14.866 4 11C4 7.13401 7.13401 4 11 4C14.866 4 18 7.13401 18 11Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}"/>
       </svg>
     {%- when 'theme-share' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M14.3354 7.37976C14.8349 8.34235 15.8406 9 17 9C18.6569 9 20 7.65685 20 6C20 4.34315 18.6569 3 17 3C15.3431 3 14 4.34315 14 6C14 6.49749 14.1211 6.9667 14.3354 7.37976ZM14.3354 7.37976L8.66458 10.6202M8.66458 10.6202C8.16512 9.65765 7.15936 9 6 9C4.34315 9 3 10.3431 3 12C3 13.6569 4.34315 15 6 15C7.15936 15 8.16512 14.3424 8.66458 13.3798M8.66458 10.6202C8.8789 11.0333 9 11.5025 9 12C9 12.4975 8.8789 12.9667 8.66458 13.3798M8.66458 13.3798L14.3354 16.6202M14.3354 16.6202C14.1211 17.0333 14 17.5025 14 18C14 19.6569 15.3431 21 17 21C18.6569 21 20 19.6569 20 18C20 16.3431 18.6569 15 17 15C15.8406 15 14.8349 15.6576 14.3354 16.6202Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" />
+        <path d="M14.3354 7.37976C14.8349 8.34235 15.8406 9 17 9C18.6569 9 20 7.65685 20 6C20 4.34315 18.6569 3 17 3C15.3431 3 14 4.34315 14 6C14 6.49749 14.1211 6.9667 14.3354 7.37976ZM14.3354 7.37976L8.66458 10.6202M8.66458 10.6202C8.16512 9.65765 7.15936 9 6 9C4.34315 9 3 10.3431 3 12C3 13.6569 4.34315 15 6 15C7.15936 15 8.16512 14.3424 8.66458 13.3798M8.66458 10.6202C8.8789 11.0333 9 11.5025 9 12C9 12.4975 8.8789 12.9667 8.66458 13.3798M8.66458 13.3798L14.3354 16.6202M14.3354 16.6202C14.1211 17.0333 14 17.5025 14 18C14 19.6569 15.3431 21 17 21C18.6569 21 20 19.6569 20 18C20 16.3431 18.6569 15 17 15C15.8406 15 14.8349 15.6576 14.3354 16.6202Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" />
       </svg>
     {%- when 'theme-star' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="m11.5497 2.03292c.181-.37723.7196-.37723.9006 0l2.5686 5.3544c.0729.15187.2178.25672.3852.27867l5.9113.77507c.4166.05463.5832.56674.2781.85482l-4.3227 4.08162c-.1229.116-.1784.2862-.1476.4522l1.0855 5.8306c.0766.4114-.3593.7277-.7284.5285l-5.2427-2.8303c-.1482-.08-.327-.08-.4752 0l-5.24271 2.8303c-.36906.1992-.80496-.1171-.72837-.5285l1.08543-5.8306c.03089-.166-.02465-.3362-.14755-.4522l-4.32269-4.08162c-.30509-.28808-.13848-.80019.27812-.85482l5.91127-.77507c.1674-.02195.31233-.1268.38518-.27867z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}"/>
+        <path d="m11.5497 2.03292c.181-.37723.7196-.37723.9006 0l2.5686 5.3544c.0729.15187.2178.25672.3852.27867l5.9113.77507c.4166.05463.5832.56674.2781.85482l-4.3227 4.08162c-.1229.116-.1784.2862-.1476.4522l1.0855 5.8306c.0766.4114-.3593.7277-.7284.5285l-5.2427-2.8303c-.1482-.08-.327-.08-.4752 0l-5.24271 2.8303c-.36906.1992-.80496-.1171-.72837-.5285l1.08543-5.8306c.03089-.166-.02465-.3362-.14755-.4522l-4.32269-4.08162c-.30509-.28808-.13848-.80019.27812-.85482l5.91127-.77507c.1674-.02195.31233-.1268.38518-.27867z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}"/>
       </svg>
     {%- when 'theme-star-half' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="m11.5497 2.03292c.181-.37723.7196-.37723.9006 0l2.5686 5.3544c.0729.15187.2178.25672.3852.27867l5.9113.77507c.4166.05463.5832.56674.2781.85482l-4.3227 4.08162c-.1229.116-.1784.2862-.1476.4522l1.0855 5.8306c.0766.4114-.3593.7277-.7284.5285l-5.2427-2.8303c-.1482-.08-.327-.08-.4752 0l-5.24271 2.8303c-.36906.1992-.80496-.1171-.72837-.5285l1.08543-5.8306c.03089-.166-.02465-.3362-.14755-.4522l-4.32269-4.08162c-.30509-.28808-.13848-.80019.27812-.85482l5.91127-.77507c.1674-.02195.31233-.1268.38518-.27867z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}"/>
+        <path d="m11.5497 2.03292c.181-.37723.7196-.37723.9006 0l2.5686 5.3544c.0729.15187.2178.25672.3852.27867l5.9113.77507c.4166.05463.5832.56674.2781.85482l-4.3227 4.08162c-.1229.116-.1784.2862-.1476.4522l1.0855 5.8306c.0766.4114-.3593.7277-.7284.5285l-5.2427-2.8303c-.1482-.08-.327-.08-.4752 0l-5.24271 2.8303c-.36906.1992-.80496-.1171-.72837-.5285l1.08543-5.8306c.03089-.166-.02465-.3362-.14755-.4522l-4.32269-4.08162c-.30509-.28808-.13848-.80019.27812-.85482l5.91127-.77507c.1674-.02195.31233-.1268.38518-.27867z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}"/>
         <path d="m12 17.5v-15.5l-3.5 5.5-6 1.5 4.5 5-1 6.5z" fill="currentColor"/>
       </svg>
     {%- when 'theme-star-filled' -%}
@@ -177,24 +176,24 @@
       </svg>
     {%- when 'theme-user' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15.5 6.5C15.5 8.433 13.933 10 12 10C10.067 10 8.5 8.433 8.5 6.5C8.5 4.567 10.067 3 12 3C13.933 3 15.5 4.567 15.5 6.5Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
-        <path d="M12 13C7.8098 13 4.86894 16.0754 4.5 20H19.5C19.1311 16.0754 16.1902 13 12 13Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M15.5 6.5C15.5 8.433 13.933 10 12 10C10.067 10 8.5 8.433 8.5 6.5C8.5 4.567 10.067 3 12 3C13.933 3 15.5 4.567 15.5 6.5Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linejoin="{{- svg_line_caps -}}" />
+        <path d="M12 13C7.8098 13 4.86894 16.0754 4.5 20H19.5C19.1311 16.0754 16.1902 13 12 13Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-video' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4 21V2L20 11.5L4 21Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}"  fill="none"/>
+        <path d="M4 21V2L20 11.5L4 21Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}"  fill="none"/>
       </svg>
     {%- when 'theme-error' or 'theme-warning'-%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12.0001 9.746V13.246M12.0001 15.746V15.736M11.1372 3.21921L2.63179 17.7406C2.24133 18.4072 2.7221 19.246 3.49467 19.246H20.5054C21.2781 19.246 21.7587 18.4072 21.3684 17.7406L12.863 3.21921C12.4767 2.55975 11.5235 2.55975 11.1372 3.21921ZM12.2501 15.746C12.2501 15.8841 12.1382 15.996 12.0001 15.996C11.862 15.996 11.7501 15.8841 11.7501 15.746C11.7501 15.608 11.862 15.496 12.0001 15.496C12.1382 15.496 12.2501 15.608 12.2501 15.746Z" stroke="#EF2D2D" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}"/>
+        <path d="M12.0001 9.746V13.246M12.0001 15.746V15.736M11.1372 3.21921L2.63179 17.7406C2.24133 18.4072 2.7221 19.246 3.49467 19.246H20.5054C21.2781 19.246 21.7587 18.4072 21.3684 17.7406L12.863 3.21921C12.4767 2.55975 11.5235 2.55975 11.1372 3.21921ZM12.2501 15.746C12.2501 15.8841 12.1382 15.996 12.0001 15.996C11.862 15.996 11.7501 15.8841 11.7501 15.746C11.7501 15.608 11.862 15.496 12.0001 15.496C12.1382 15.496 12.2501 15.608 12.2501 15.746Z" stroke="#EF2D2D" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}"/>
       </svg>
     {%- when 'theme-zoom-in'-%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M11 8V14M14 11L8 11M20 20L16.05 16.05M18 11C18 14.866 14.866 18 11 18C7.13401 18 4 14.866 4 11C4 7.13401 7.13401 4 11 4C14.866 4 18 7.13401 18 11Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" />
+        <path d="M11 8V14M14 11L8 11M20 20L16.05 16.05M18 11C18 14.866 14.866 18 11 18C7.13401 18 4 14.866 4 11C4 7.13401 7.13401 4 11 4C14.866 4 18 7.13401 18 11Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'theme-zoom-out'-%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M14 11L8 11M20 20L16.05 16.05M18 11C18 14.866 14.866 18 11 18C7.13401 18 4 14.866 4 11C4 7.13401 7.13401 4 11 4C14.866 4 18 7.13401 18 11Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" />
+        <path d="M14 11L8 11M20 20L16.05 16.05M18 11C18 14.866 14.866 18 11 18C7.13401 18 4 14.866 4 11C4 7.13401 7.13401 4 11 4C14.866 4 18 7.13401 18 11Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" />
       </svg>
 
     {%- comment -%}BRAND ICONS{%- endcomment -%}
@@ -296,14 +295,14 @@
       </svg>
     {%- when 'option-discount' -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15.5 8.5L8.5 15.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
-        <path d="M9 9.875C9.48325 9.875 9.875 9.48325 9.875 9C9.875 8.51675 9.48325 8.125 9 8.125C8.51675 8.125 8.125 8.51675 8.125 9C8.125 9.48325 8.51675 9.875 9 9.875Z" fill="currentColor" stroke="currentColor" stroke-width="{{- icon_stroke_width | times: 0.5 -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
-        <path d="M15 15.875C15.4832 15.875 15.875 15.4832 15.875 15C15.875 14.5168 15.4832 14.125 15 14.125C14.5168 14.125 14.125 14.5168 14.125 15C14.125 15.4832 14.5168 15.875 15 15.875Z" fill="currentColor" stroke="currentColor" stroke-width="{{- icon_stroke_width | times: 0.5 -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" />
+        <path d="M15.5 8.5L8.5 15.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
+        <path d="M9 9.875C9.48325 9.875 9.875 9.48325 9.875 9C9.875 8.51675 9.48325 8.125 9 8.125C8.51675 8.125 8.125 8.51675 8.125 9C8.125 9.48325 8.51675 9.875 9 9.875Z" fill="currentColor" stroke="currentColor" stroke-width="{{- svg_line_width | times: 0.5 -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
+        <path d="M15 15.875C15.4832 15.875 15.875 15.4832 15.875 15C15.875 14.5168 15.4832 14.125 15 14.125C14.5168 14.125 14.125 14.5168 14.125 15C14.125 15.4832 14.5168 15.875 15 15.875Z" fill="currentColor" stroke="currentColor" stroke-width="{{- svg_line_width | times: 0.5 -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" />
       </svg>
     {%- when 'option-world'-%}
       {%- comment -%}update{%- endcomment -%}
       <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 19.25C16.0041 19.25 19.25 16.0041 19.25 12C19.25 7.99594 16.0041 4.75 12 4.75C7.99594 4.75 4.75 7.99594 4.75 12C4.75 16.0041 7.99594 19.25 12 19.25Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" ></path><path d="M15.25 12C15.25 16.5 13.2426 19.25 12 19.25C10.7574 19.25 8.75 16.5 8.75 12C8.75 7.5 10.7574 4.75 12 4.75C13.2426 4.75 15.25 7.5 15.25 12Z" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" ></path><path d="M5 12H12H19" stroke="currentColor" stroke-width="{{- icon_stroke_width -}}" stroke-linecap="{{- icon_corner_shape -}}" stroke-linejoin="{{- icon_corner_shape -}}" ></path>
+        <path d="M12 19.25C16.0041 19.25 19.25 16.0041 19.25 12C19.25 7.99594 16.0041 4.75 12 4.75C7.99594 4.75 4.75 7.99594 4.75 12C4.75 16.0041 7.99594 19.25 12 19.25Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" ></path><path d="M15.25 12C15.25 16.5 13.2426 19.25 12 19.25C10.7574 19.25 8.75 16.5 8.75 12C8.75 7.5 10.7574 4.75 12 4.75C13.2426 4.75 15.25 7.5 15.25 12Z" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" ></path><path d="M5 12H12H19" stroke="currentColor" stroke-width="{{- svg_line_width -}}" stroke-linecap="{{- svg_line_caps -}}" stroke-linejoin="{{- svg_line_caps -}}" ></path>
       </svg>
     {%- when 'option-apple' -%}
       <svg width="1em" height="1em" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -572,37 +571,36 @@
   {%- endcase -%}
 {%- endcapture -%}
 
-{% liquid
-  assign icon_class = ''
-  if text or text != blank
-    assign icon_class = 'icon-with-text' | append: ' ' | append: class
-  elsif class
-    assign icon_class = 'icon' | append: ' ' | append: class | replace_last: ' icon', ''
+{%- liquid
+  assign has_text = false
+  if text and text != blank
+    assign has_text = true
   endif
 
-  assign custom_icon = custom_icon | default: false
-%}
+  assign img_source = custom_icon | default: false
+  assign wrapper_classes = ''
 
-{%- if custom_icon -%}
-  {%- assign icon_alt = icon_alt | default: null -%}
-  {%- if class -%}<span class="{{ icon_class }}">{%- endif -%}
-  {{ custom_icon | image_url: width: 24 | image_tag: alt: icon_alt }}
+  if has_text
+    assign wrapper_classes = 'icon-with-text' | append: ' ' | append: class
+  elsif class
+    assign wrapper_classes = 'icon' | append: ' ' | append: class | replace_last: ' icon', ''
+  endif
+-%}
+
+{%- if img_source -%}
+  {%- assign alt_text = icon_alt | default: null -%}
+  {%- if class -%}<span class="{{ wrapper_classes }}">{%- endif -%}
+  {{ img_source | image_url: width: 24 | image_tag: alt: alt_text }}
   {%- if class -%}</span>{%- endif -%}
+{%- elsif has_text -%}
+  <div class="{{ wrapper_classes }}">
+    <span class="icon">{{ icon }}</span>
+    <span class="icon__text">{{ text }}</span>
+  </div>
 {%- else -%}
-  {%- if text or text != blank -%}
-    <div class="{{ icon_class }}">
-      <span class="icon">
-        {{ icon }}
-      </span>
-      <span class="icon__text">
-        {{ text }}
-      </span>
-    </div>
-  {%- else -%}
-    {%- if class -%}<span class="{{ icon_class }}">{%- endif -%}
-    {{ icon }}
-    {%- if class -%}</span>{%- endif -%}
-  {%- endif -%}
+  {%- if class -%}<span class="{{ wrapper_classes }}">{%- endif -%}
+  {{ icon }}
+  {%- if class -%}</span>{%- endif -%}
 {%- endif -%}
 
 {%- comment -%}

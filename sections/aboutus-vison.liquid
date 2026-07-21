@@ -48,28 +48,11 @@
 }
 {% endschema %}
 
-<section
-  style="
-    background-color: {{ section.settings.bg_color }};
-    padding-top: {{ section.settings.padding_top }}px;
-    padding-bottom: {{ section.settings.padding_bottom }}px;
-  "
->
-  <div class="custom-heading-wrapper">
-    {% if section.settings.heading != blank %}
-      <h2 class="custom-heading">{{ section.settings.heading }}</h2>
-    {% endif %}
-    {% if section.settings.subheading != blank %}
-      <p class="custom-subheading">{{ section.settings.subheading }}</p>
-    {% endif %}
-  </div>
-</section>
-
 <style>
 .custom-heading {
     margin-bottom:10px;
   color: #b4975a;
-  text-transform: uppercase;  
+  text-transform: uppercase;
   font-size: clamp(28px, 5vw, 50px) !important;
   text-align: center;
 }
@@ -85,3 +68,26 @@
   opacity: 0.8;
 }
 </style>
+
+{%- assign s2_cfg = section.settings -%}
+{%- assign s2_has_heading = false -%}
+{%- if s2_cfg.heading != blank -%}{%- assign s2_has_heading = true -%}{%- endif -%}
+{%- assign s2_has_sub = false -%}
+{%- if s2_cfg.subheading != blank -%}{%- assign s2_has_sub = true -%}{%- endif -%}
+
+<section
+  style="
+    background-color: {{ s2_cfg.bg_color }};
+    padding-top: {{ s2_cfg.padding_top }}px;
+    padding-bottom: {{ s2_cfg.padding_bottom }}px;
+  "
+>
+  <div class="custom-heading-wrapper">
+    {%- if s2_has_heading -%}
+      <h2 class="custom-heading">{{ s2_cfg.heading }}</h2>
+    {%- endif -%}
+    {%- if s2_has_sub -%}
+      <p class="custom-subheading">{{ s2_cfg.subheading }}</p>
+    {%- endif -%}
+  </div>
+</section>

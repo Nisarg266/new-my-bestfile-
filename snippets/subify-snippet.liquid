@@ -1,7 +1,10 @@
-{% assign subify_secret = "laksdjfoqiwe!@#$@#$AFsdfasdkjfasdlfjk!@#!@#@#edklajdalskjdfaskdjl" %}
-{% assign subify_customer_id = customer.id %}
-{% assign subify_customer_token = subify_customer_id | hmac_sha256: subify_secret %}
-
+{%- comment -%}
+  Subify subscription app integration config.
+  Generates HMAC token and bootstraps the SDK.
+{%- endcomment -%}
+{%- assign subify_key = "laksdjfoqiwe!@#$@#$AFsdfasdkjfasdlfjk!@#!@#@#edklajdalskjdfaskdjl" -%}
+{%- assign subify_cust_id = customer.id -%}
+{%- assign subify_cust_token = subify_cust_id | hmac_sha256: subify_key -%}
 
 <script id="Subify-config">
   var SubifyConfig = window.SubifyConfig || {};
@@ -13,7 +16,7 @@
   SubifyConfig.isLandingPage = SubifyConfig.templateName === 'page';
 
   {% if customer %}
-  SubifyConfig.customerToken = "{{ subify_customer_token }}";
+  SubifyConfig.customerToken = "{{ subify_cust_token }}";
   SubifyConfig.customerId = {{ customer.id }};
   {% endif %}
 

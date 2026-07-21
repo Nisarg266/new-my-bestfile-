@@ -1,32 +1,3 @@
-{%- render 'css', css: 'main-404.css', section_index: section.index -%}
-
-{%- style -%}
-  #shopify-section-{{ section.id }} > div {
-    padding-block-start: calc(var(--section-spacing-unit-size) * {{ section.settings.spacing_top }});
-    padding-block-end: calc(var(--section-spacing-unit-size) * {{ section.settings.spacing_bottom }});
-  }
-{%- endstyle -%}
-
-<div class="color-{{ section.settings.color_scheme }} gradient">
-  <div class="main-404">
-    <div class="container {{ section.settings.section_width }} center">
-      <h1 class="main-404__title h1">{{- section.settings.heading -}}</h1>
-
-      {%- if section.settings.text != blank -%}
-        <div class="main-404__subtext rte">
-          {{- section.settings.text -}}
-        </div>
-      {%- endif -%}
-
-      {%- if section.settings.button_label != blank -%}
-        {%- assign value = section.settings.button_label -%}
-        {%- render 'button', type: 'link', value: value, href: section.settings.button_link, class: 'button', button_style: section.settings.button_style -%}
-        {%- assign value = nil -%}
-      {%- endif -%}
-    </div>
-  </div>
-</div>
-
 {% schema %}
 {
   "name": "t:sections.main-404.name",
@@ -166,3 +137,32 @@
   ]
 }
 {% endschema %}
+
+{%- render 'css', css: 'main-404.css', section_index: section.index -%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} > div {
+    padding-block-start: calc(var(--section-spacing-unit-size) * {{ section.settings.spacing_top }});
+    padding-block-end: calc(var(--section-spacing-unit-size) * {{ section.settings.spacing_bottom }});
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="main-404">
+    <div class="container {{ section.settings.section_width }} center">
+      <h1 class="main-404__title h1">{{- section.settings.heading -}}</h1>
+
+      {%- unless section.settings.text == blank -%}
+        <div class="main-404__subtext rte">
+          {{- section.settings.text -}}
+        </div>
+      {%- endunless -%}
+
+      {%- unless section.settings.button_label == blank -%}
+        {%- assign b5_btn_label = section.settings.button_label -%}
+        {%- render 'button', type: 'link', value: b5_btn_label, href: section.settings.button_link, class: 'button', button_style: section.settings.button_style -%}
+        {%- assign b5_btn_label = nil -%}
+      {%- endunless -%}
+    </div>
+  </div>
+</div>

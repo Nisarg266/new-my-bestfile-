@@ -40,40 +40,6 @@
 }
 {% endschema %}
 
-<section class="transform-health-section">
-  <div class="container">
-    <div class="content-left">
-      <h2>{{ section.settings.heading }}</h2>
-      <p>{{ section.settings.subheading }}</p>
-      <a href="{{ section.settings.button_link }}" class="cta-button">{{ section.settings.button_text }}</a>
-    </div>
-    <div class="content-right">
-      {% if section.settings.hero_image %}
-        <img src="{{ section.settings.hero_image | image_url: width: 500 }}" alt="Healthy Woman" class="hero-image">
-      {% endif %}
-    </div>
-  </div>
-
-  <div class="stats-bar">
-    <div class="stat">
-      <strong>90%</strong>
-      <p>Success Rate</p>
-    </div>
-    <div class="stat">
-      <strong>Only 15</strong>
-      <p>Students Per Session</p>
-    </div>
-    <div class="stat">
-      <strong>Hands-On</strong>
-      <p>Surgical Training</p>
-    </div>
-    <div class="stat">
-      <strong>Taught</strong>
-      <p>By Doctors</p>
-    </div>
-  </div>
-</section>
-
 <style>
   .transform-health-section {
     background: linear-gradient(to bottom, #1a1a1a 50%, #ffffff 50%);
@@ -143,3 +109,40 @@
     color: #777;
   }
 </style>
+
+{%- assign s12_cfg = section.settings -%}
+{%- assign s12_hero = s12_cfg.hero_image -%}
+
+<section class="transform-health-section">
+  <div class="container">
+    <div class="content-left">
+      <h2>{{ s12_cfg.heading }}</h2>
+      <p>{{ s12_cfg.subheading }}</p>
+      <a href="{{ s12_cfg.button_link }}" class="cta-button">{{ s12_cfg.button_text }}</a>
+    </div>
+    <div class="content-right">
+      {%- if s12_hero -%}
+        <img src="{{ s12_hero | image_url: width: 500 }}" alt="Healthy Woman" class="hero-image">
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat">
+      <strong>90%</strong>
+      <p>Success Rate</p>
+    </div>
+    <div class="stat">
+      <strong>Only 15</strong>
+      <p>Students Per Session</p>
+    </div>
+    <div class="stat">
+      <strong>Hands-On</strong>
+      <p>Surgical Training</p>
+    </div>
+    <div class="stat">
+      <strong>Taught</strong>
+      <p>By Doctors</p>
+    </div>
+  </div>
+</section>

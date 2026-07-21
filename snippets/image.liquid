@@ -1,128 +1,126 @@
+{%- comment -%}
+  Responsive image renderer with srcset, sizes, and lazy loading optimization.
+  params: image, alt, role, widths, sizes, loading, width, class, attr,
+          image_for_mobile, image_per_view, media_index, animation
+{%- endcomment -%}
+
 {%- liquid
-  # required
-  assign image = image | default: false
-  assign image_optimization = settings.image_optimization | default: 'true'
+  assign img_obj = image | default: false
+  assign img_opt = settings.image_optimization | default: 'true'
 
-  # role: presentation for decorative images - a11y
   if role != 'presentation'
-    # if image alt is not specified, image default alt will be used
-    assign alt = alt | default: image.alt | default: '' | escape
+    assign img_alt = alt | default: img_obj.alt | default: '' | escape
   endif
 
-  assign widths = widths | default: 'auto'
-  assign sizes = sizes | default: 'auto'
+  assign img_widths_param = widths | default: 'auto'
+  assign img_sizes_param = sizes | default: 'auto'
+  assign img_loading = loading | default: 'lazy'
 
-  # assign attr = attr | default: false
-
-  assign loading = loading | default: 'lazy'
-  # set default section_index value
+  # Determine loading strategy based on section position
   if section.location == 'header' or section.location == 'template'
-    assign default_section_index = section.index | default: 3
+    assign sec_idx = section.index | default: 3
   else
-    assign default_section_index = 3
+    assign sec_idx = 3
   endif
-  assign section_index = section.index | default: default_section_index
-  if section_index < 2
-    assign loading = 'eager'
-    assign fetchpriority = 'high'
+  assign sec_idx = section.index | default: sec_idx
+
+  if sec_idx < 2
+    assign img_loading = 'eager'
+    assign img_fetchpriority = 'high'
   endif
 
-  # media index
+  # Media index check for galleries
   if media_index
-    assign media_index = media_index | default: 1
-    # check difference with image_per_view and media_index
-    assign media_index_checker = image_per_view | minus: media_index
-    if media_index_checker < 0
-      assign loading = 'lazy'
+    assign media_idx = media_index | default: 1
+    assign media_check = image_per_view | minus: media_idx
+    if media_check < 0
+      assign img_loading = 'lazy'
     endif
   endif
 
-  assign min_image_width = 128
+  assign img_min_width = 128
 
-  # image optimization
-  if image_optimization == 'true'
-    assign max_image_width = settings.page_width | default: 1440
-    if max_image_width > image.width
-      assign max_image_width = image.width
+  # Calculate max image width
+  if img_opt == 'true'
+    assign img_max_width = settings.page_width | default: 1440
+    if img_max_width > img_obj.width
+      assign img_max_width = img_obj.width
     endif
   else
-    assign max_image_width = image.width
-    # assign image_per_view = 1
+    assign img_max_width = img_obj.width
   endif
 
-  # for mobile images
-  assign image_for_mobile = image_for_mobile | default: false
-  if image_for_mobile
-    assign max_image_width = 720
+  # Mobile constraint
+  assign img_is_mobile = image_for_mobile | default: false
+  if img_is_mobile
+    assign img_max_width = 720
   endif
 
-  # for grid blocks
-  assign image_per_view = image_per_view | default: 1
-  if image_per_view > 1
-    assign image_per_view = image_per_view | minus: 1
+  # Grid block adjustment
+  assign img_per_view = image_per_view | default: 1
+  if img_per_view > 1
+    assign img_per_view = img_per_view | minus: 1
   endif
-  if image_optimization == 'false'
-    assign image_per_view = 1
+  if img_opt == 'false'
+    assign img_per_view = 1
   endif
 
-  assign max_image_width = max_image_width | divided_by: image_per_view | floor
+  assign img_max_width = img_max_width | divided_by: img_per_view | floor
 
-  # default widths
-  assign width_list = '360,480,600,720,840,960,1280,1440,1800,2160,2880,3600,4320,5760'
-
+  # Explicit width override
   if width
-    assign max_image_width = width
+    assign img_max_width = width
   endif
 
-  # set limits
-  if max_image_width > 5760
-    assign max_image_width = 5760
-  elsif max_image_width < 360
-    assign max_image_width = 360
+  # Clamp
+  if img_max_width > 5760
+    assign img_max_width = 5760
+  elsif img_max_width < 360
+    assign img_max_width = 360
   endif
 
-  # recalculate width list based on max_image_width
-  assign width_list = width_list | split: ','
-  assign temp_width_list = ''
-  for width in width_list
-    assign width_int = width | plus: 0
-    if width_int <= max_image_width
-      assign temp_width_list = temp_width_list | append: width_int | append: ','
+  # Build width list
+  assign all_widths = '360,480,600,720,840,960,1280,1440,1800,2160,2880,3600,4320,5760' | split: ','
+  assign filtered_widths = ''
+  for w in all_widths
+    assign w_int = w | plus: 0
+    if w_int <= img_max_width
+      assign filtered_widths = filtered_widths | append: w_int | append: ','
     endif
   endfor
-  assign temp_width_list = temp_width_list | remove_last: ','
-  assign width_list = temp_width_list
+  assign filtered_widths = filtered_widths | remove_last: ','
+  assign filtered_widths = filtered_widths | split: ','
 
-  # generate srcset
-  assign srcset = ''
-  assign width_list = width_list | split: ','
-  for width in width_list
-    assign width_int = width | plus: 0
-    if width_int == image.width
-      assign srcset_item = image | image_url
+  # Generate srcset
+  assign img_srcset = ''
+  for w in filtered_widths
+    assign w_int = w | plus: 0
+    if w_int == img_obj.width
+      assign src_item = img_obj | image_url
     else
-      assign srcset_item = image | image_url: width: width_int
+      assign src_item = img_obj | image_url: width: w_int
     endif
-    assign srcset = srcset | append: ' ' | append: srcset_item | append: ' ' | append: width_int | append: 'w,'
+    assign img_srcset = img_srcset | append: ' ' | append: src_item | append: ' ' | append: w_int | append: 'w,'
   endfor
-  assign srcset = srcset | remove_last: ','
+  assign img_srcset = img_srcset | remove_last: ','
 
-  # generate sizes
-  if sizes == 'auto'
-    assign size_list = width_list
-    assign sizes = ''
-    for size in size_list
-      assign size_int = size | plus: 0
-      assign sizes = sizes | append: '(max-width: ' | append: size_int | append: 'px) ' | append: size_int | append: 'px,'
+  # Generate sizes
+  if img_sizes_param == 'auto'
+    assign img_sizes = ''
+    for s in filtered_widths
+      assign s_int = s | plus: 0
+      assign img_sizes = img_sizes | append: '(max-width: ' | append: s_int | append: 'px) ' | append: s_int | append: 'px,'
     endfor
-    assign sizes = sizes | append: ' 100vw'
+    assign img_sizes = img_sizes | append: ' 100vw'
+  else
+    assign img_sizes = img_sizes_param
   endif
 
-  # set width and height
-  assign width = width | default: image.width
-  assign height = width | divided_by: image.aspect_ratio | ceil
+  # Dimensions
+  assign img_width = width | default: img_obj.width
+  assign img_height = img_width | divided_by: img_obj.aspect_ratio | ceil
 
-  # animation
+  # Animation toggle
   if animation == 'false'
     assign class = class | append: ' animation-none'
   endif
@@ -130,30 +128,30 @@
 
 {%- unless attr -%}
   {{
-    image
-    | image_url: width: min_image_width
+    img_obj
+    | image_url: width: img_min_width
     | image_tag:
-      width: width,
-      height: height,
-      alt: alt,
+      width: img_width,
+      height: img_height,
+      alt: img_alt,
       role: role,
       class: class,
-      srcset: srcset,
-      sizes: sizes,
-      loading: loading,
-      fetchpriority: fetchpriority,
+      srcset: img_srcset,
+      sizes: img_sizes,
+      loading: img_loading,
+      fetchpriority: img_fetchpriority,
       attr: attr
   }}
 {%- else -%}
   <img
-    src="{{ image | image_url: width: min_image_width }}"
-    {% if alt %}alt="{{ alt }}"{% endif %}
-    width="{{- width -}}"
-    height="{{- height -}}"
-    {% if loading %}loading="{{ loading }}"{% endif %}
-    {% if class %}class="{{ class }}"{% endif %}
-    {% if sizes %}sizes="{{ sizes }}"{% endif %}
-    {% if srcset %}srcset="{{ srcset }}"{% endif %}
-    {% if attr %}{{ attr }}{% endif %}
+    src="{{ img_obj | image_url: width: img_min_width }}"
+    {%- if img_alt %} alt="{{ img_alt }}"{% endif -%}
+    width="{{- img_width -}}"
+    height="{{- img_height -}}"
+    {%- if img_loading %} loading="{{ img_loading }}"{% endif -%}
+    {%- if class %} class="{{ class }}"{% endif -%}
+    {%- if img_sizes %} sizes="{{ img_sizes }}"{% endif -%}
+    {%- if img_srcset %} srcset="{{ img_srcset }}"{% endif -%}
+    {{ attr }}
   >
-  {%- endunless -%}
+{%- endunless -%}

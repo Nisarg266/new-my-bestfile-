@@ -21,11 +21,18 @@
   ]
 }
 {% endschema %}
+
+{%- assign s13_cfg = section.settings -%}
+{%- assign s13_link = s13_cfg.button_link -%}
+{%- assign s13_has_link = false -%}
+{%- if s13_link != blank -%}{%- assign s13_has_link = true -%}{%- endif -%}
+{%- assign s13_founder = s13_cfg.founder_image_mobile -%}
+
 <style>
 /* Base */
 .quote-section {
-  --gold: {{ section.settings.button_text_color }};
-  color: {{ section.settings.text_color }};
+  --gold: {{ s13_cfg.button_text_color }};
+  color: {{ s13_cfg.text_color }};
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
@@ -103,10 +110,10 @@
 </style>
 
 <!-- MOBILE TOP: founder image (hidden on desktop) -->
-{%- if section.settings.founder_image_mobile != blank -%}
+{%- if s13_founder != blank -%}
   <div class="founder-top-mobile">
     <img
-      src="{{ section.settings.founder_image_mobile | img_url: 'master' }}"
+      src="{{ s13_founder | img_url: 'master' }}"
       alt="Founder"
       loading="lazy"
     >
@@ -115,22 +122,22 @@
 
 <!-- BOTTOM: background image section with content -->
 <section
-  class="quote-section {% if section.settings.button_link != blank %}is-clickable{% endif %}"
-  style="background-image: url({{ section.settings.bg_image_desktop | img_url: 'master' }});"
-  {% if section.settings.button_link != blank %}
-    onclick="if(window.innerWidth>=769) window.location.href='{{ section.settings.button_link }}'"
+  class="quote-section {% if s13_has_link %}is-clickable{% endif %}"
+  style="background-image: url({{ s13_cfg.bg_image_desktop | img_url: 'master' }});"
+  {% if s13_has_link %}
+    onclick="if(window.innerWidth>=769) window.location.href='{{ s13_link }}'"
   {% endif %}
-  data-mobile-bg="{{ section.settings.bg_image_mobile | img_url: 'master' }}"
+  data-mobile-bg="{{ s13_cfg.bg_image_mobile | img_url: 'master' }}"
 >
   <div class="quote-section__content">
-    <div class="quote-section__text">{{ section.settings.quote_text }}</div>
-    <div class="quote-section__author">- {{ section.settings.author }}</div>
+    <div class="quote-section__text">{{ s13_cfg.quote_text }}</div>
+    <div class="quote-section__author">- {{ s13_cfg.author }}</div>
 
-    {%- if section.settings.button_link != blank -%}
-      <a href="{{ section.settings.button_link }}"
+    {%- if s13_has_link -%}
+      <a href="{{ s13_link }}"
          class="quote-section__button"
-         style="background: {{ section.settings.button_bg }}; color: {{ section.settings.button_text_color }};">
-        {{ section.settings.button_text }}
+         style="background: {{ s13_cfg.button_bg }}; color: {{ s13_cfg.button_text_color }};">
+        {{ s13_cfg.button_text }}
       </a>
     {%- endif -%}
   </div>

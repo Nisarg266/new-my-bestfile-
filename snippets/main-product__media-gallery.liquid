@@ -1,6 +1,29 @@
-{% assign zoom_modal = section.settings.display_media_zoom %}
-{% comment %} This prevents init without save on customiser {% endcomment %}
-{% comment %} {% unless zoom_modal == 'none' %} {% endcomment %}
+{% comment %}
+  ===========================================================================
+  main-product__media-gallery.liquid
+  ---------------------------------------------------------------------------
+  Renders the product media gallery (slider + thumbs, grid, or single media).
+  Rewritten implementation: identical rendered output, restructured internals.
+  ===========================================================================
+{% endcomment %}
+
+{%- liquid
+  # ---- Zoom / photoswipe mode --------------------------------------------
+  assign mg_zoom_mode = section.settings.display_media_zoom
+
+  # ---- Bucket media by type, then re-merge in original position order -----
+  assign mg_images = product.media | where: 'media_type', 'image'
+  assign mg_models = product.media | where: 'media_type', 'model'
+  assign mg_local_videos = product.media | where: 'media_type', 'video'
+  assign mg_external_videos = product.media | where: 'media_type', 'external_video'
+  assign mg_all_videos = mg_local_videos | concat: mg_external_videos
+  assign mg_media = mg_images | concat: mg_models | concat: mg_all_videos | sort: 'position'
+
+  # feat: hide variants media
+  assign mg_hide_variant_media = section.settings.hide_variants | default: false
+-%}
+
+{% comment %} PhotoSwipe assets are always emitted so the customiser never needs a save before init {% endcomment %}
 <link
   data-photoswipe
   rel="stylesheet"
@@ -15,24 +38,8 @@
   data-photoswipe
   src="{{- 'photoswipe-lightbox.umd.min.js' | asset_url -}}"
   defer="defer"></script>
-{% comment %} {% endunless %} {% endcomment %}
 
 <script src="{{ 'product-media-gallery.js' | asset_url }}" async></script>
-
-{%- liquid
-  assign product_images = product.media | where: 'media_type', 'image'
-  assign product_models = product.media | where: 'media_type', 'model'
-  assign product_local_videos = product.media | where: 'media_type', 'video'
-  assign product_external_videos = product.media | where: 'media_type', 'external_video'
-  assign product_videos = product_local_videos | concat: product_external_videos
-  assign product_media = product_images | concat: product_models | concat: product_videos | sort: 'position'
-
-  # feat: hide variants media
-  assign hide_variants_media = section.settings.hide_variants | default: false
-  comment
-    assign hide_variants_media_list = section.settings.variant_list_of_hideable_media
-  endcomment
--%}
 
 {% style %}
   #shopify-section-{{ section.id }} .main-product__media {
@@ -63,36 +70,40 @@
 {%- endif -%}
 {% endstyle %}
 
-{% comment %} MEDI GALLERY SLIDER NAVIGATIONS {% endcomment %}
+{% comment %} Resolve thumbnail / arrow / pagination visibility per breakpoint {% endcomment %}
 {%- liquid
-  assign thumbs_desktop = true
-  assign thumbs_mobile = true
-  if section.settings.product_media_with_thumbs == 'only_mobile' or section.settings.product_media_with_thumbs == 'none'
-    assign thumbs_desktop = false
+  assign mg_thumbs_mode = section.settings.product_media_with_thumbs
+
+  assign mg_thumbs_desktop = true
+  assign mg_thumbs_mobile = true
+  if mg_thumbs_mode == 'only_mobile' or mg_thumbs_mode == 'none'
+    assign mg_thumbs_desktop = false
   endif
-  if section.settings.product_media_with_thumbs == 'only_desktop' or section.settings.product_media_with_thumbs == 'none'
-    assign thumbs_mobile = false
+  if mg_thumbs_mode == 'only_desktop' or mg_thumbs_mode == 'none'
+    assign mg_thumbs_mobile = false
   endif
 
-  assign arrows_mobile = true
-  if section.settings.gallery_arrows_show_on == 'desktop' or section.settings.gallery_arrows_show_on == 'none'
-    assign arrows_mobile = false
+  assign mg_arrows_mode = section.settings.gallery_arrows_show_on
+  assign mg_arrows_mobile = true
+  if mg_arrows_mode == 'desktop' or mg_arrows_mode == 'none'
+    assign mg_arrows_mobile = false
   endif
 
-  assign pagination = false
-  if thumbs_mobile == false and section.settings.display_media_gallery_pagination != 'none' or thumbs_mobile == false and arrows_mobile == false
-    assign pagination = true
+  assign mg_pagination = false
+  if mg_thumbs_mobile == false and section.settings.display_media_gallery_pagination != 'none' or mg_thumbs_mobile == false and mg_arrows_mobile == false
+    assign mg_pagination = true
   endif
 -%}
 
-{% comment %} METAFIELD FEATURES - MEDIA INFO {% endcomment %}
-{%- capture metafield_media_info -%}
+{% comment %} METAFIELD FEATURES - MEDIA INFO marquee {% endcomment %}
+{%- capture mg_media_info_html -%}
   {% if section.settings.media_gallery_info != blank %}
+    {%- assign mg_info_text = section.settings.media_gallery_info -%}
     <product-media-info class="main-product__media--feat main-product__media--feat-media-info color-{{ section.settings.color_scheme_gallery }} gradient" style="opacity: 0">
       <div class="product__media--info">
         <div class="product__media--info-marquee">
-          <p aria-hidden="true">{{- section.settings.media_gallery_info -}}</p>
-          <p>{{- section.settings.media_gallery_info -}}</p>
+          <p aria-hidden="true">{{- mg_info_text -}}</p>
+          <p>{{- mg_info_text -}}</p>
         </div>
       </div>
     </product-media-info>
@@ -100,459 +111,65 @@
 {%- endcapture -%}
 
 {% comment %} METAFIELD FEATURES - AS SEEN ON {% endcomment %}
-{%- capture metafield_media_as_seen_on -%}
+{%- capture mg_as_seen_on_html -%}
   {% if section.settings.metafield_as_seen_on != blank %}
     {%- liquid
-      assign metafield_as_seen_on_namespace = section.settings.metafield_as_seen_on | split: '.' | first
-      assign metafield_as_seen_on_key = section.settings.metafield_as_seen_on | split: '.' | last
-      assign metafield_as_seen_on = product.metafields[metafield_as_seen_on_namespace][metafield_as_seen_on_key]
+      assign mg_aso_namespace = section.settings.metafield_as_seen_on | split: '.' | first
+      assign mg_aso_key = section.settings.metafield_as_seen_on | split: '.' | last
+      assign mg_aso_value = product.metafields[mg_aso_namespace][mg_aso_key]
     -%}
-    {% if metafield_as_seen_on != blank %}
+    {% if mg_aso_value != blank %}
       <div class="main-product__media--feat main-product__media--feat-as-seen-on color-{{ section.settings.color_scheme_gallery }} gradient">
-        {%- render 'product-as-seen-on', product: product, metafield_as_seen_on: metafield_as_seen_on -%}
+        {%- render 'product-as-seen-on', product: product, metafield_as_seen_on: mg_aso_value -%}
       </div>
     {% endif %}
   {% endif %}
 {%- endcapture -%}
 
-{% comment %} 
-  CHECK PRODUCT MEDIA HAS SAME ASPECT RATIO 
-  If all product media has same aspect ratio, 
-  then disable slider auto height to prevent aspect ratio settings overwriting
+{% comment %}
+  When every media item shares the same aspect ratio, force swiper auto-height
+  off so the configured aspect ratio setting is not overwritten.
 {% endcomment %}
 {%- liquid
-  assign product_media_has_same_aspect_ratio = true
-  assign product_media_first_aspect_ratio = product_media.first.aspect_ratio
-  for media in product_media
-    unless forloop.first
-      if media.aspect_ratio != product_media_first_aspect_ratio
-        assign product_media_has_same_aspect_ratio = false
+  assign mg_uniform_ratio = true
+  assign mg_first_ratio = mg_media.first.aspect_ratio
+  for mg_ratio_item in mg_media
+    if forloop.index0 > 0
+      if mg_ratio_item.aspect_ratio != mg_first_ratio
+        assign mg_uniform_ratio = false
         break
       endif
-    endunless
+    endif
   endfor
-  assign product_slider_auto_height = section.settings.product_slider_auto_height | default: false
-  if product_media_has_same_aspect_ratio == true
-    assign product_slider_auto_height = false
+
+  assign mg_slider_auto_height = section.settings.product_slider_auto_height | default: false
+  if mg_uniform_ratio == true
+    assign mg_slider_auto_height = false
   endif
 -%}
 
-{% comment %} 
-  {%- liquid
-  if hide_variants_media
-  assign is_there_a_list = false
-  if hide_variants_media_list != blank
-  assign is_there_a_list = true
-  assign list_of_product_option_names = hide_variants_media_list | split: ','
-  # echo 'variant_list: ' | append: list_of_product_option_names | append: '<br>'
-  endif
-  # assign is_there_a_list = true
-  assign variant_media_positions = ''
-  assign hideable_variant_options = ''
-  if 1==1
-  for variant in product.variants
-  assign forloop_product_variant = forloop
-  assign hideable_variant_options_array = hideable_variant_options | split: ','
-  assign value_already_present = false
-  assign available_variant_positions = ''
-  for product_option in product.options_with_values
-  for item_of_product_option_names in list_of_product_option_names
-  if product_option.name == item_of_product_option_names
-  assign available_variant_positions = available_variant_positions | append: product_option.position | append: ','
-  # break
-  endif
-  endfor
-  endfor
-  assign available_variant_positions_array = available_variant_positions | split: ','
-  # echo 'available_variant_positions_array: ' | append: available_variant_positions_array | append: '<br>'
-  for hideable_variant_option in hideable_variant_options_array
-  if is_there_a_list
-  assign variant_options_handle = ''
-  for variant_option in variant.options
-  assign variant_option_handle = variant_option | handleize
-  assign variant_options_handle = variant_options_handle | append: variant_option_handle
-  if forloop.last == false
-  assign variant_options_handle = variant_options_handle | append: '-'
-  endif
-  endfor
-  if hideable_variant_option == variant_options_handle
-  assign value_already_present = true
-  # break
-  endif
-  else
-  assign variant_options_handle = variant.options | json | handleize
-  if hideable_variant_option == variant_options_handle
-  assign value_already_present = true
-  # break
-  endif
-  endif
-  endfor
-  if value_already_present == false
-  if is_there_a_list
-  assign variant_options_handle = ''
-  for variant_option in variant.options
-  assign variant_option_forloop = forloop
-  assign available_variant_option = false
-  for variant_position in available_variant_positions_array
-  assign variant_position_number = variant_position | times: 1
-  if variant_option_forloop.index == variant_position_number
-  assign available_variant_option = variant_option
-  endif
-  endfor
-  # echo 'available_variant_option: ' | append: available_variant_option | append: '<br>'
-  if available_variant_option
-  assign variant_option_handle = available_variant_option | handleize
-  assign variant_options_handle = variant_options_handle | append: variant_option_handle
-  if forloop.last == false
-  assign variant_options_handle = variant_options_handle | append: '-'
-  endif
-  endif
-  comment
-  assign variant_option_handle = variant_option | handleize
-  assign variant_options_handle = variant_options_handle | append: variant_option_handle
-  if forloop.last == false
-  assign variant_options_handle = variant_options_handle | append: '-'
-  endif
-  endcomment
-  endfor
-  assign hideable_variant_options = hideable_variant_options | append: variant_options_handle
-  if forloop_product_variant.last == false
-  assign hideable_variant_options = hideable_variant_options | append: ','
-  endif
-  else
-  assign variant_options_handle = variant.options | json | handleize
-  assign hideable_variant_options = hideable_variant_options | append: variant_options_handle
-  if forloop_product_variant.last == false
-  assign hideable_variant_options = hideable_variant_options | append: ','
-  endif
-  endif
-  assign variant_media_positions = variant_media_positions | append: variant.featured_media.position | append: ','
-  # echo 'variant_media_positions: ' | append: variant_media_positions | append: '<br>'
-  endif
-  endfor
-  endif
-  if 1==3
-  for product_option_with_values in product.options_with_values
-  for product_option_value in product_option_with_values.values
-  # echo product_option_value.variant | json | append: '<br>'
-  echo product_option_value.variant.options | json | append: '<br>'
-  assign forloop_product_option_value = forloop
-  assign hideable_variant_options_array = hideable_variant_options | split: ','
-  assign value_already_present = false
-  if product_option_value.variant
-  assign variant_options_handle = product_option_value.variant.options | json | handleize
-  for hideable_variant_option in hideable_variant_options_array
-  if hideable_variant_option == variant_options_handle
-  assign value_already_present = true
-  # break
-  endif
-  endfor
-  endif
-  if value_already_present == false
-  if product_option_value.variant
-  assign hideable_variant_options = hideable_variant_options | append: variant_options_handle
-  if forloop_product_option_value.last == false
-  assign hideable_variant_options = hideable_variant_options | append: ','
-  endif
-  assign variant_media_positions = variant_media_positions | append: product_option_value.variant.featured_media.position | append: ','
-  endif
-  endif
-  endfor
-  endfor
-  endif
-  # echo 'hideable_variant_options: ' | append: hideable_variant_options | append: '<br>'
-  assign variant_media_positions = variant_media_positions | split: ','
-  assign hideable_variant_options = hideable_variant_options | split: ','
-  assign variant_media_positions_size = variant_media_positions.size | minus : 1
-  assign data_group_array = ''
-  for variant_media_position in variant_media_positions
-  assign i = forloop.index0
-  if variant_media_position != ''
-  if i == 0
-  assign start_position = 1
-  else
-  assign start_position = variant_media_positions[i] | plus: 0
-  endif
-  assign end_index = i | plus: 1
-  # increase end_index value until end_position is not empty
-  assign end_position = ''
-  assign max_end_index = variant_media_positions_size
-  for j in (end_index..max_end_index)
-  assign end_position = variant_media_positions[j]
-  if end_position != ''
-  assign end_index = j
-  break
-  endif
-  endfor
-  assign end_position = variant_media_positions[end_index] | default: product.media.size | plus: 0
-  for media in product.media
-  if media.position >= start_position and media.position < end_position
-  assign hideable_variant_options_i = hideable_variant_options[i]
-  assign data_group_array = data_group_array | append: hideable_variant_options_i | append: ","
-  endif
-  endfor
-  endif
-  endfor
-  comment
-  for media in product.media
-  for i in (0..variant_media_positions_size)
-  if i == 0
-  assign start_position = 1
-  else
-  assign start_position = variant_media_positions[i] | plus: 0
-  endif
-  assign end_index = i | plus: 1
-  assign end_position = variant_media_positions[end_index] | default: 9999 | plus: 0
-  echo 'x: '
-  echo variant_media_positions[i] | append: ' - '
-  echo 'y: '
-  echo variant_media_positions[end_index] | append: ' - '
-  echo hideable_variant_options[i] | append: ' - '
-  echo start_position | append: ' - ' | append: end_position | append: '<br>'
-  if media.position >= start_position and media.position < end_position and variant_media_positions[i] != ''
-  assign hideable_variant_options_i = hideable_variant_options[i]
-  assign data_group_array = data_group_array | append: hideable_variant_options_i | append: ","
-  endif
-  endfor
-  endfor
-  endcomment
-  assign data_group_array = data_group_array | split: ','
-  endif 
-  -%}
-  {%- liquid
-      if hide_variants_media
-  
-        assign is_there_a_list = false
-        if hide_variants_media_list != blank
-          assign is_there_a_list = true
-          assign list_of_product_option_names = hide_variants_media_list | split: ','
-          # echo 'variant_list: ' | append: list_of_product_option_names | append: '<br>'
-        endif
-        # assign is_there_a_list = true
-  
-        assign variant_media_positions = ''
-        assign hideable_variant_options = ''
-  
-        if 1==1
-          for variant in product.variants
-  
-            assign forloop_product_variant = forloop
-            assign hideable_variant_options_array = hideable_variant_options | split: ','
-            assign value_already_present = false
-  
-            assign available_variant_positions = ''
-            for product_option in product.options_with_values
-              for item_of_product_option_names in list_of_product_option_names
-                if product_option.name == item_of_product_option_names
-                  assign available_variant_positions = available_variant_positions | append: product_option.position | append: ','
-                  # break
-                endif
-              endfor
-            endfor
-            assign available_variant_positions_array = available_variant_positions | split: ','
-            # echo 'available_variant_positions_array: ' | append: available_variant_positions_array | append: '<br>'
-  
-            for hideable_variant_option in hideable_variant_options_array
-  
-              if is_there_a_list
-                assign variant_options_handle = ''
-                for variant_option in variant.options
-                  assign variant_option_handle = variant_option | handleize
-                  assign variant_options_handle = variant_options_handle | append: variant_option_handle
-                  if forloop.last == false
-                    assign variant_options_handle = variant_options_handle | append: '-'
-                  endif
-                endfor
-                if hideable_variant_option == variant_options_handle
-                  assign value_already_present = true
-                  # break
-                endif
-              else
-                assign variant_options_handle = variant.options | json | handleize
-                if hideable_variant_option == variant_options_handle
-                  assign value_already_present = true
-                  # break
-                endif
-              endif
-  
-            endfor
-            if value_already_present == false
-  
-              if is_there_a_list
-  
-                assign variant_options_handle = ''
-                for variant_option in variant.options
-  
-                  assign variant_option_forloop = forloop
-                  assign available_variant_option = false
-                  for variant_position in available_variant_positions_array
-                    assign variant_position_number = variant_position | times: 1
-                    if variant_option_forloop.index == variant_position_number
-                      assign available_variant_option = variant_option
-                    endif
-                  endfor
-                  # echo 'available_variant_option: ' | append: available_variant_option | append: '<br>'
-  
-                  if available_variant_option
-                    assign variant_option_handle = available_variant_option | handleize
-                    assign variant_options_handle = variant_options_handle | append: variant_option_handle
-                    if forloop.last == false
-                      assign variant_options_handle = variant_options_handle | append: '-'
-                    endif
-                  endif
-  
-                  comment
-                  assign variant_option_handle = variant_option | handleize
-                  assign variant_options_handle = variant_options_handle | append: variant_option_handle
-                  if forloop.last == false
-                    assign variant_options_handle = variant_options_handle | append: '-'
-                  endif
-                  endcomment
-                endfor
-                assign hideable_variant_options = hideable_variant_options | append: variant_options_handle
-                if forloop_product_variant.last == false
-                  assign hideable_variant_options = hideable_variant_options | append: ','
-                endif
-              else
-                assign variant_options_handle = variant.options | json | handleize
-                assign hideable_variant_options = hideable_variant_options | append: variant_options_handle
-                if forloop_product_variant.last == false
-                  assign hideable_variant_options = hideable_variant_options | append: ','
-                endif
-              endif
-  
-              assign variant_media_positions = variant_media_positions | append: variant.featured_media.position | append: ','
-              # echo 'variant_media_positions: ' | append: variant_media_positions | append: '<br>'
-            endif
-          endfor
-        endif
-  
-        if 1==3
-          for product_option_with_values in product.options_with_values
-            for product_option_value in product_option_with_values.values
-              # echo product_option_value.variant | json | append: '<br>'
-              echo product_option_value.variant.options | json | append: '<br>'
-  
-              assign forloop_product_option_value = forloop
-              assign hideable_variant_options_array = hideable_variant_options | split: ','
-              assign value_already_present = false
-  
-              if product_option_value.variant
-                assign variant_options_handle = product_option_value.variant.options | json | handleize
-  
-                for hideable_variant_option in hideable_variant_options_array
-                  if hideable_variant_option == variant_options_handle
-                    assign value_already_present = true
-                    # break
-                  endif
-                endfor
-  
-              endif
-              if value_already_present == false
-  
-                if product_option_value.variant
-                  assign hideable_variant_options = hideable_variant_options | append: variant_options_handle
-                  if forloop_product_option_value.last == false
-                    assign hideable_variant_options = hideable_variant_options | append: ','
-                  endif
-  
-                  assign variant_media_positions = variant_media_positions | append: product_option_value.variant.featured_media.position | append: ','
-                endif
-              endif
-  
-            endfor
-          endfor
-        endif
-  
-        # echo 'hideable_variant_options: ' | append: hideable_variant_options | append: '<br>'
-  
-        assign variant_media_positions = variant_media_positions | split: ','
-        assign hideable_variant_options = hideable_variant_options | split: ','
-        assign variant_media_positions_size = variant_media_positions.size | minus : 1
-        assign data_group_array = ''
-  
-        for variant_media_position in variant_media_positions
-          assign i = forloop.index0
-          if variant_media_position != ''
-            if i == 0
-              assign start_position = 1
-            else
-              assign start_position = variant_media_positions[i] | plus: 0
-            endif
-            assign end_index = i | plus: 1
-  
-            # increase end_index value until end_position is not empty
-            assign end_position = ''
-            assign max_end_index = variant_media_positions_size
-            for j in (end_index..max_end_index)
-              assign end_position = variant_media_positions[j]
-              if end_position != ''
-                assign end_index = j
-                break
-              endif
-            endfor
-            assign end_position = variant_media_positions[end_index] | default: product.media.size | plus: 0
-  
-            for media in product.media
-              if media.position >= start_position and media.position < end_position
-                assign hideable_variant_options_i = hideable_variant_options[i]
-                assign data_group_array = data_group_array | append: hideable_variant_options_i | append: ","
-              endif
-            endfor
-          endif
-        endfor
-  
-        comment
-        for media in product.media
-  
-          for i in (0..variant_media_positions_size)
-  
-            if i == 0
-              assign start_position = 1
-            else
-              assign start_position = variant_media_positions[i] | plus: 0
-            endif
-            assign end_index = i | plus: 1
-            assign end_position = variant_media_positions[end_index] | default: 9999 | plus: 0
-  
-            echo 'x: '
-            echo variant_media_positions[i] | append: ' - '
-            echo 'y: '
-            echo variant_media_positions[end_index] | append: ' - '
-            echo hideable_variant_options[i] | append: ' - '
-            echo start_position | append: ' - ' | append: end_position | append: '<br>'
-  
-            if media.position >= start_position and media.position < end_position and variant_media_positions[i] != ''
-              assign hideable_variant_options_i = hideable_variant_options[i]
-              assign data_group_array = data_group_array | append: hideable_variant_options_i | append: ","
-            endif
-          endfor
-  
-        endfor
-        endcomment
-        assign data_group_array = data_group_array | split: ','
-      endif
-  -%}
-{% endcomment %}<div
+{% comment %}
+  ---------------------------------------------------------------------------
+  NOTE: the original snippet contained a large experimental "hide variant
+  media" grouping routine wrapped in a 'comment' block here. It never
+  executed (it was fully commented out) and produced no output, so it has been
+  omitted in this rewrite. The downstream `product-media-card` snippet still
+  receives `data_group_array` for interface compatibility (it resolves to nil,
+  exactly as in the original).
+  ---------------------------------------------------------------------------
+{% endcomment %}
+
+<div
   id="MediaGallery-{{ section.id }}"
   class="main-product__media "
-  {% if section.settings.product_media_aspect_ratio == 'fit' %}
-  data-height-limited
-  {% endif %}
-  {% if product_slider_auto_height %}
-  data-slider-auto-height
-  {% endif %}
+  {% if section.settings.product_media_aspect_ratio == 'fit' %}data-height-limited{% endif %}
+  {% if mg_slider_auto_height %}data-slider-auto-height{% endif %}
   data-with-thumbs="{{ section.settings.product_media_with_thumbs }}"
-  {% if section.settings.product_media_layout == 'product__media-layout--grid' %}
-  data-desktop-grid
-  {% endif %}
-  {% if topbar_mobile == 'on-top' %}
-  data-mobile-topbar
-  {% endif %}
-  {% if product_has_single_media %}
-  data-single-media
-  {% endif %}
-  data-hide-other-variants-media="{% if hide_variants_media %}true{% else %}false{% endif %}">
+  {% if section.settings.product_media_layout == 'product__media-layout--grid' %}data-desktop-grid{% endif %}
+  {% if topbar_mobile == 'on-top' %}data-mobile-topbar{% endif %}
+  {% if product_has_single_media %}data-single-media{% endif %}
+  data-hide-other-variants-media="{% if mg_hide_variant_media %}true{% else %}false{% endif %}">
+
 {% unless product_has_single_media %}
   {% comment %} SLIDER - PRODUCT MEDIA {% endcomment %}
   <div
@@ -562,36 +179,33 @@
     {% comment %} METAFIELD FEATURES - SLIDER {% endcomment %}
     <div class="main-product__media--slider">
       <div class="main-product__media--features">
-        {{- metafield_media_info -}}
-        {{- metafield_media_as_seen_on -}}
+        {{- mg_media_info_html -}}
+        {{- mg_as_seen_on_html -}}
       </div>
 
       {%- comment -%} Overlay product badges on top of main image area {%- endcomment -%}
-      {% render 'product-badges'
-        , product: product %}
+      {% render 'product-badges', product: product %}
 
       <swiper-product-gallery
         handle="product-gallery"
-        {% unless section.settings.product_media_with_thumbs == 'none' %}
-        thumbs="product-thumbs"
-        {% endunless %}
-        {% unless zoom_modal == 'none' %}
-        zoom="{{- zoom_modal -}}"
-        {% endunless %}
-        data-hide-other-variants-media="{% if hide_variants_media %}true{% else %}false{% endif %}">
+        {% unless section.settings.product_media_with_thumbs == 'none' %}thumbs="product-thumbs"{% endunless %}
+        {% unless mg_zoom_mode == 'none' %}zoom="{{- mg_zoom_mode -}}"{% endunless %}
+        data-hide-other-variants-media="{% if mg_hide_variant_media %}true{% else %}false{% endif %}">
+
         {%- liquid
-          assign product_gallery_slides = ''
-          if product_media.size > 0
-            for media in product_media
-              capture product_gallery_slides
-                echo product_gallery_slides
-                render 'product-media-card', media: media, card_type: 'slide', zoom_modal: zoom_modal, media_index: forloop.index0, section_index: section.index, data_group_array: data_group_array
+          assign mg_gallery_slides = ''
+          if mg_media.size > 0
+            for mg_slide_media in mg_media
+              capture mg_gallery_slides
+                echo mg_gallery_slides
+                render 'product-media-card', media: mg_slide_media, card_type: 'slide', zoom_modal: mg_zoom_mode, media_index: forloop.index0, section_index: section.index, data_group_array: data_group_array
               endcapture
             endfor
           endif
         -%}
-        {% capture product_gallery_options %}
-          {% if pagination %}
+
+        {% capture mg_gallery_options %}
+          {% if mg_pagination %}
             {
               "navigation": {
                 "nextEl": ".swiper-button-next",
@@ -604,7 +218,7 @@
                 "dynamicBullets": {% if section.settings.display_media_gallery_pagination == 'dynamic' %}true{% else %}false{% endif %}
               },
               {% endif %}
-              "autoHeight": {{ product_slider_auto_height }},
+              "autoHeight": {{ mg_slider_auto_height }},
               {% if section.settings.product_media_layout_mobile == 'product__media-layout--partial--sm' %}
                 "spaceBetween": 8,
                 "slidesPerView": 1.125,
@@ -627,7 +241,7 @@
                 "nextEl": ".swiper-button-next",
                 "prevEl": ".swiper-button-prev"
               },
-              "autoHeight": {{ product_slider_auto_height }}
+              "autoHeight": {{ mg_slider_auto_height }}
               {% if section.settings.product_media_layout_mobile == 'product__media-layout--partial--sm' %},
                 "spaceBetween": 8,
                 "slidesPerView": 1.125
@@ -649,26 +263,18 @@
               {% endif %}
             }
           {% endif %}
-          {% endcapture %}
-        {% render 'instance-swiper'
-          ,
- handle: 'product-gallery'
-          ,
- options: product_gallery_options
-          ,
- slides: product_gallery_slides
-          ,
- arrows: section.settings.gallery_arrows_show_on
-        %}
+        {% endcapture %}
+
+        {% render 'instance-swiper', handle: 'product-gallery', options: mg_gallery_options, slides: mg_gallery_slides, arrows: section.settings.gallery_arrows_show_on %}
       </swiper-product-gallery>
     </div>
   </div>
 
   {% unless section.settings.product_media_with_thumbs == 'none' %}
     {% comment %} THUMBS - PRODUCT MEDIA {% endcomment %}
-    <div class="main-product__media--thumbs-wrapper{% unless thumbs_mobile and thumbs_desktop %}{% if thumbs_mobile %} small-up-hide{% elsif thumbs_desktop %} small-hide{% endif %}{% endunless %}{% if section.settings.product_media_layout == 'product__media-layout--grid' %} small-up-hide{% endif %}">
+    <div class="main-product__media--thumbs-wrapper{% unless mg_thumbs_mobile and mg_thumbs_desktop %}{% if mg_thumbs_mobile %} small-up-hide{% elsif mg_thumbs_desktop %} small-hide{% endif %}{% endunless %}{% if section.settings.product_media_layout == 'product__media-layout--grid' %} small-up-hide{% endif %}">
       <swiper-product-thumbs handle="product-thumbs">
-        {% capture product_thumbs_options %}
+        {% capture mg_thumbs_options %}
           {
             "direction": "horizontal",
             {% if product.media.size > 5 %}
@@ -698,26 +304,21 @@
               }
             }
           }
-          {% endcapture %}
+        {% endcapture %}
+
         {%- liquid
-          assign product_thumbs_slides = ''
-          if product_media.size > 0
-            for media in product_media
-              capture product_thumbs_slides
-                echo product_thumbs_slides
-                render 'product-media-card', media: media, card_type: 'thumbs', zoom_modal: zoom_modal, media_index: forloop.index0, section_index: section.index, data_group_array: data_group_array
+          assign mg_thumbs_slides = ''
+          if mg_media.size > 0
+            for mg_thumb_media in mg_media
+              capture mg_thumbs_slides
+                echo mg_thumbs_slides
+                render 'product-media-card', media: mg_thumb_media, card_type: 'thumbs', zoom_modal: mg_zoom_mode, media_index: forloop.index0, section_index: section.index, data_group_array: data_group_array
               endcapture
             endfor
           endif
         -%}
-        {% render 'instance-swiper'
-          ,
- handle: 'product-thumbs'
-          ,
- options: product_thumbs_options
-          ,
- slides: product_thumbs_slides
-        %}
+
+        {% render 'instance-swiper', handle: 'product-thumbs', options: mg_thumbs_options, slides: mg_thumbs_slides %}
       </swiper-product-thumbs>
     </div>
   {% endunless %}
@@ -725,32 +326,17 @@
   {% if section.settings.product_media_layout == 'product__media-layout--grid' %}
     {% comment %} GRID - PRODUCT MEDIA {% endcomment %}
     <div class="main-product__media--grid small-hide photoswipe-wrapper">
-      {%- if product_media.size > 0 -%}
-        {%- for media in product_media -%}
+      {%- if mg_media.size > 0 -%}
+        {%- for mg_grid_media in mg_media -%}
           <div class="main-product__media--grid-item">
             {% comment %} METAFIELD FEATURES - GRID {% endcomment %}
             {% if forloop.first or forloop.index0 == 1 %}
               <div class="main-product__media--features">
-                {% if forloop.first %}
-                  {{- metafield_media_as_seen_on -}}{% endif %}
-                {% if forloop.index0 == 1 %}
-                  {{- metafield_media_info -}}{% endif %}
+                {% if forloop.first %}{{- mg_as_seen_on_html -}}{% endif %}
+                {% if forloop.index0 == 1 %}{{- mg_media_info_html -}}{% endif %}
               </div>
             {% endif %}
-            {%- render 'product-media-card'
-              ,
- media: media
-              ,
- card_type: 'grid'
-              ,
- zoom_modal: zoom_modal
-              ,
- media_index: forloop.index0
-              ,
- section_index: section.index
-              ,
- data_group_array: data_group_array
-            -%}
+            {%- render 'product-media-card', media: mg_grid_media, card_type: 'grid', zoom_modal: mg_zoom_mode, media_index: forloop.index0, section_index: section.index, data_group_array: data_group_array -%}
           </div>
         {%- endfor -%}
       {%- endif -%}
@@ -758,51 +344,39 @@
   {% endif %}
 {% else %}
   {% comment %} SINGLE PRODUCT MEDIA {% endcomment %}
-  {% assign media = product_media.first %}
-    <div class="main-product__media--grid-item">
+  {% assign mg_single_media = mg_media.first %}
+  <div class="main-product__media--grid-item">
     {% comment %} METAFIELD FEATURES - GRID {% endcomment %}
     {% if forloop.first or forloop.index0 == 1 %}
       <div class="main-product__media--features">
-        {% if forloop.first %}
-          {{- metafield_media_as_seen_on -}}{% endif %}
-        {% if forloop.index0 == 1 %}
-          {{- metafield_media_info -}}{% endif %}
+        {% if forloop.first %}{{- mg_as_seen_on_html -}}{% endif %}
+        {% if forloop.index0 == 1 %}{{- mg_media_info_html -}}{% endif %}
       </div>
     {% endif %}
-    {%- render 'product-media-card'
-      ,
- media: media
-      ,
- card_type: 'grid'
-      ,
- zoom_modal: zoom_modal
-      ,
- media_index: forloop.index0
-      ,
- section_index: section.index
-      ,
- data_group_array: data_group_array
-    -%}
+    {%- render 'product-media-card', media: mg_single_media, card_type: 'grid', zoom_modal: mg_zoom_mode, media_index: forloop.index0, section_index: section.index, data_group_array: data_group_array -%}
   </div>
-{% endunless %}</div>{% comment %} 
-    PAGINATION - PRODUCT MEDIA GALLERY 
-    Please don't move elsewhere! 
-    Out and after grid is relatively right place 
-    and it's been bind by specific class name , works exactly fine (:
-  {% endcomment %}
-{% if pagination %}
-<div class="swiper--product-gallery__pagination swiper-pagination{% if section.settings.display_media_gallery_pagination == 'dynamic' or section.settings.display_media_gallery_pagination == 'lines' %} swiper-pagination--{{ section.settings.display_media_gallery_pagination }}{% endif %} small-up-hide{% if section.settings.product_media_layout_mobile == 'product__media-layout--partial--sm' %} swiper-pagination--carousel{% endif %}"></div>{% endif %}{% unless zoom_modal == 'none' %}
-{% comment %} ZOOM MODAL BUTTONS {% endcomment %}
-<div class="hidden" data-close-icon>
-  {%- render 'icon'
-    , icon_name: 'theme-close' -%}
+{% endunless %}
+
 </div>
-<div class="hidden" data-prev-icon>
-  {%- render 'icon'
-    , icon_name: 'theme-chevron'
-    , class: 'icon--rotate-180' -%}
-</div>
-<div class="hidden" data-next-icon>
-  {%- render 'icon'
-    , icon_name: 'theme-chevron' -%}
-</div>{% endunless %}
+
+{% comment %}
+  PAGINATION - PRODUCT MEDIA GALLERY
+  Intentionally placed here (outside the gallery / after the grid): it is bound
+  by class name and only works correctly in this position.
+{% endcomment %}
+{% if mg_pagination %}
+<div class="swiper--product-gallery__pagination swiper-pagination{% if section.settings.display_media_gallery_pagination == 'dynamic' or section.settings.display_media_gallery_pagination == 'lines' %} swiper-pagination--{{ section.settings.display_media_gallery_pagination }}{% endif %} small-up-hide{% if section.settings.product_media_layout_mobile == 'product__media-layout--partial--sm' %} swiper-pagination--carousel{% endif %}"></div>
+{% endif %}
+
+{% unless mg_zoom_mode == 'none' %}
+  {% comment %} ZOOM MODAL BUTTONS {% endcomment %}
+  <div class="hidden" data-close-icon>
+    {%- render 'icon', icon_name: 'theme-close' -%}
+  </div>
+  <div class="hidden" data-prev-icon>
+    {%- render 'icon', icon_name: 'theme-chevron', class: 'icon--rotate-180' -%}
+  </div>
+  <div class="hidden" data-next-icon>
+    {%- render 'icon', icon_name: 'theme-chevron' -%}
+  </div>
+{% endunless %}

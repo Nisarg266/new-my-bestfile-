@@ -1,47 +1,3 @@
-{{- 'section-newsletter-popup.css' | asset_url | stylesheet_tag -}}
-<script src="{{- 'newsletter-popup.js' | asset_url -}}" defer="defer"></script>
-
-<newsletter-popup
-  id="NewsletterModal-{{- section.id -}}"
-  class="newsletter-popup"
-  data-delay="{{- section.settings.delay -}}"
-  {% if request.design_mode and section.settings.show_popup_on_customizer %} data-open-in-design-mode="true"{% endif %}
->
-  <div
-    class="newsletter-popup__wrapper  color-{{ section.settings.color_scheme }}"
-    aria-modal="true" role="dialog" aria-labelledby="Newsletter Modal" tabindex="-1"
-  >
-    {%- if section.settings.image != blank -%}
-      <div class="media media--small newsletter-popup__media">
-        {%- render 'image', image: section.settings.image, image_url_width: 550, alt: section.settings.image.alt | escape, section_index: section.index -%}
-      </div>
-    {%- endif -%}
-
-    <div class="newsletter-popup__content">
-      {%- if section.settings.heading != blank -%}
-        <h4 class="section__heading {{ section.settings.heading_size }}">
-          {{- section.settings.heading -}}
-        </h4>
-      {%- endif -%}
-
-      {%- if section.settings.text != blank -%}
-        <div class="newsletter-popup__entry rte">
-          {{- section.settings.text -}}
-        </div>
-      {%- endif -%}
-
-      <div class="newsletter-popup__form">
-        {%- assign submit_button_text = 'theme.newsletter.button_label' | t -%}
-        {%- render 'newsletter-form', namespace: section.id, js_class: 'js-form', submit_button_text: submit_button_text -%}
-      </div>
-
-      <button id="ModalClose-{{- section.id -}}" type="button" class="link js-button-close">
-        {{- section.settings.button_close_text -}}
-      </button>
-    </div>
-  </div>
-</newsletter-popup>
-
 {% schema %}
 {
   "name": "t:sections.newsletter-popup.name",
@@ -132,3 +88,52 @@
   ]
 }
 {% endschema %}
+
+{{- 'section-newsletter-popup.css' | asset_url | stylesheet_tag -}}
+<script src="{{- 'newsletter-popup.js' | asset_url -}}" defer="defer"></script>
+
+{%- assign s9_cfg = section.settings -%}
+{%- assign s9_sid = section.id -%}
+{%- assign s9_open_design = false -%}
+{%- if request.design_mode and s9_cfg.show_popup_on_customizer -%}{%- assign s9_open_design = true -%}{%- endif -%}
+{%- assign s9_btn_label = 'theme.newsletter.button_label' | t -%}
+
+<newsletter-popup
+  id="NewsletterModal-{{- s9_sid -}}"
+  class="newsletter-popup"
+  data-delay="{{- s9_cfg.delay -}}"
+  {% if s9_open_design %} data-open-in-design-mode="true"{% endif %}
+>
+  <div
+    class="newsletter-popup__wrapper  color-{{ s9_cfg.color_scheme }}"
+    aria-modal="true" role="dialog" aria-labelledby="Newsletter Modal" tabindex="-1"
+  >
+    {%- if s9_cfg.image != blank -%}
+      <div class="media media--small newsletter-popup__media">
+        {%- render 'image', image: s9_cfg.image, image_url_width: 550, alt: s9_cfg.image.alt | escape, section_index: section.index -%}
+      </div>
+    {%- endif -%}
+
+    <div class="newsletter-popup__content">
+      {%- if s9_cfg.heading != blank -%}
+        <h4 class="section__heading {{ s9_cfg.heading_size }}">
+          {{- s9_cfg.heading -}}
+        </h4>
+      {%- endif -%}
+
+      {%- if s9_cfg.text != blank -%}
+        <div class="newsletter-popup__entry rte">
+          {{- s9_cfg.text -}}
+        </div>
+      {%- endif -%}
+
+      <div class="newsletter-popup__form">
+        {%- render 'newsletter-form', namespace: s9_sid, js_class: 'js-form', submit_button_text: s9_btn_label -%}
+      </div>
+
+      <button id="ModalClose-{{- s9_sid -}}" type="button" class="link js-button-close">
+        {{- s9_cfg.button_close_text -}}
+      </button>
+    </div>
+  </div>
+</newsletter-popup>

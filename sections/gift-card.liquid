@@ -14,19 +14,19 @@
   <div class="container max-w-narrow gift-card__inner">
 
     <div class="gift-card__cover color-{{ section.settings.color_scheme_for_cover }}">
-      {%- assign formatted_balance = gift_card.balance | money_without_trailing_zeros | strip_html -%}
-      <h1 class="h4">{{ 'gift_card.heading' | t: value: formatted_balance, shop: shop.name }}</h1>
+      {%- assign b10_balance_str = gift_card.balance | money_without_trailing_zeros | strip_html -%}
+      <h1 class="h4">{{ 'gift_card.heading' | t: value: b10_balance_str, shop: shop.name }}</h1>
       <div class="gift-card__image-wrapper relative">
         {%- liquid
           if section.settings.logo_card_image != blank
-            assign image = section.settings.logo_card_image
-            assign logo_image_src = image | image_url: width: image.width
+            assign b10_img = section.settings.logo_card_image
+            assign b10_logo_src = b10_img | image_url: width: b10_img.width
           else
-            assign logo_image_src = 'gift-card/card.svg' | shopify_asset_url
+            assign b10_logo_src = 'gift-card/card.svg' | shopify_asset_url
           endif
-          assign logo_image_alt = section.settings.logo_card_image.alt | default: shop.name | escape
+          assign b10_logo_alt = section.settings.logo_card_image.alt | default: shop.name | escape
 
-          echo '<img width="auto" height="auto" src="' | append: logo_image_src | append: '" alt="' | append: logo_image_alt | append: '" class="gift-card__image" loading="lazy">'
+          echo '<img width="auto" height="auto" src="' | append: b10_logo_src | append: '" alt="' | append: b10_logo_alt | append: '" class="gift-card__image" loading="lazy">'
         -%}
 
         <p class="gift-card__price">
@@ -34,12 +34,12 @@
             if gift_card.enabled == false or gift_card.expired
               echo 'gift_card.expired' | t
             elsif gift_card.balance != gift_card.initial_value
-              assign gift_card_balance = gift_card.balance | money_without_trailing_zeros
-              assign initial_value = gift_card.initial_value | money_without_trailing_zeros
+              assign b10_remaining = gift_card.balance | money_without_trailing_zeros
+              assign b10_initial = gift_card.initial_value | money_without_trailing_zeros
               if settings.show_currency_codes
-                assign gift_card_balance = gift_card.balance | money_with_currency
+                assign b10_remaining = gift_card.balance | money_with_currency
               endif
-              echo 'gift_card.remaining_amount' | t: balance: gift_card_balance, initial_value: initial_value
+              echo 'gift_card.remaining_amount' | t: balance: b10_remaining, initial_value: b10_initial
             else
               if settings.show_currency_codes
                 echo gift_card.initial_value | money_with_currency
@@ -79,25 +79,25 @@
         <div class="gift-card__buttons no-print">
           <div class="form-row">
             {%- liquid
-              assign value = 'theme.actions.print' | t
-              assign attr = 'onclick="window.print();"'
-              render 'button', value: value, attr: attr, class: 'button button--outlined'
-              assign value = nil
-              assign attr = nil
+              assign b10_value = 'theme.actions.print' | t
+              assign b10_attr = 'onclick="window.print();"'
+              render 'button', value: b10_value, attr: b10_attr, class: 'button button--outlined'
+              assign b10_value = nil
+              assign b10_attr = nil
             -%}
           </div>
 
           <div class="form-row">
             {%- liquid
-              assign value = 'theme.actions.start_shopping' | t
-              capture attr
+              assign b10_value = 'theme.actions.start_shopping' | t
+              capture b10_attr
                 echo 'target="_blank"'
                 echo 'rel="noopener"'
                 echo 'aria-describedby="a11y-new-window-message"'
               endcapture
-              render 'button', type: 'link', href: request.origin, value: value, attr: attr, class: 'button button--primary'
-              assign value = nil
-              assign attr = nil
+              render 'button', type: 'link', href: request.origin, value: b10_value, attr: b10_attr, class: 'button button--primary'
+              assign b10_value = nil
+              assign b10_attr = nil
             -%}
           </div>
         </div>

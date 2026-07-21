@@ -1,29 +1,71 @@
+{% schema %}
+{
+  "name": "Testimonial Carousel",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote"
+        },
+        {
+          "type": "text",
+          "id": "source",
+          "label": "Source (e.g., WIRED, GQ)"
+        },
+        {
+  "type": "range",
+  "id": "rating",
+  "label": "Star Rating",
+  "min": 1,
+  "max": 5,
+  "step": 1,
+  "default": 5
+}
+
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [{
+    "name": "Testimonial Carousel",
+    "category": "Custom"
+  }]
+}
+{% endschema %}
+
 <!-- Swiper CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 
 <!-- Swiper JS -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
+{%- assign s10_testimonials = section.blocks -%}
+
 <div class="testimonial-marquee">
   <div class="testimonial-track">
-    {% for block in section.blocks %}
+    {%- for s10_item in s10_testimonials -%}
       <div class="testimonial-slide">
-        <p class="testimonial-text">"{{ block.settings.quote }}"</p>
+        <p class="testimonial-text">"{{ s10_item.settings.quote }}"</p>
         <div class="testimonial-stars">
-  {% for i in (1..block.settings.rating) %}★{% endfor %}
+  {% for s10_star in (1..s10_item.settings.rating) %}★{% endfor %}
 </div>
-        <p class="testimonial-source">— {{ block.settings.source }}</p>
+        <p class="testimonial-source">— {{ s10_item.settings.source }}</p>
       </div>
-    {% endfor %}
-    {% for block in section.blocks %}
+    {%- endfor -%}
+    {%- for s10_item in s10_testimonials -%}
       <div class="testimonial-slide">
-        <p class="testimonial-text">"{{ block.settings.quote }}"</p>
+        <p class="testimonial-text">"{{ s10_item.settings.quote }}"</p>
       <div class="testimonial-stars">
-  {% for i in (1..block.settings.rating) %}★{% endfor %}
+  {% for s10_star in (1..s10_item.settings.rating) %}★{% endfor %}
 </div>
-      <p class="testimonial-source">— {{ block.settings.source }}</p>
+      <p class="testimonial-source">— {{ s10_item.settings.source }}</p>
       </div>
-    {% endfor %}
+    {%- endfor -%}
   </div>
 </div>
 
@@ -101,43 +143,3 @@
     });
   });
 </script>
-
-{% schema %}
-{
-  "name": "Testimonial Carousel",
-  "settings": [],
-  "blocks": [
-    {
-      "type": "testimonial",
-      "name": "Testimonial",
-      "settings": [
-        {
-          "type": "textarea",
-          "id": "quote",
-          "label": "Quote"
-        },
-        {
-          "type": "text",
-          "id": "source",
-          "label": "Source (e.g., WIRED, GQ)"
-        },
-        {
-  "type": "range",
-  "id": "rating",
-  "label": "Star Rating",
-  "min": 1,
-  "max": 5,
-  "step": 1,
-  "default": 5
-}
-
-      ]
-    }
-  ],
-  "max_blocks": 10,
-  "presets": [{
-    "name": "Testimonial Carousel",
-    "category": "Custom"
-  }]
-}
-{% endschema %}
