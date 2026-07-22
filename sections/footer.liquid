@@ -4,7 +4,7 @@
   #shopify-section-{{ section.id }} > div {
     padding-block-start: 25px;
     --section-footer-spacing-grid: {{ section.settings.spacing_grid }};
-  }
+  }footer__brand-social list-unstyled
 
   {%- for block in section.blocks -%}
     .block-{{ block.id }} {
@@ -200,7 +200,7 @@
                     endif
                   -%}
                 </a>
-                <ul class="footer__brand-social list-unstyled" style="margin: 1rem 0; display: flex; gap: 1rem;">
+                <ul class="footer__brand-social list-unstyled" style="margin: 1rem 7rem; display: flex; gap: 1rem;">
   {% if block.settings.facebook_icon and block.settings.facebook_url %}
     <li>
       <a href="{{ block.settings.facebook_url }}" target="_blank" rel="noopener">
