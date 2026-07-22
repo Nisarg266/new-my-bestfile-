@@ -221,10 +221,6 @@
             "notify_link": "#cart123"
           }
         },
-        "c_edd_estimated_delivery_date_delivery_coder_theme_KhpMBq": {
-          "type": "shopify://apps/c-edd-estimated-delivery-date/blocks/delivery_coder_theme/4a0685bc-c234-45b2-8382-5ad6a8e3e3fd",
-          "settings": {}
-        },
         "upsell_products_p6EDhW": {
           "type": "upsell-products",
           "disabled": true,
@@ -424,7 +420,6 @@
         "inventory_mfhqJL",
         "8604a6ff-ad0b-44dd-8068-1de4e062f8e8",
         "four_icons_notify_AkWNgm",
-        "c_edd_estimated_delivery_date_delivery_coder_theme_KhpMBq",
         "upsell_products_p6EDhW",
         "accordians_VxL6Jk",
         "trust_icons_pHiV7d",
@@ -1431,56 +1426,6 @@
         "padding_bottom_mobile": 0
       }
     },
-    "features_YgLMPq": {
-      "type": "Features",
-      "blocks": {
-        "feature_69LMkH": {
-          "type": "feature",
-          "settings": {
-            "image_1": "shopify://shop_images/scientist-woman-tablet-microscope-laboratory-research-dna-analysis-happy-with-medical-study-student-science-expert-biotechnology-with-digital-software-lens-check-data.jpg",
-            "video_url": "",
-            "show_feature_box": false,
-            "flex_direction": "row",
-            "heading_1": "<p>Omegia®: Omega-7 boost for youthful skin</p>",
-            "icon_1": "shopify://shop_images/dew_18389482.svg",
-            "heading_2": "<p>Hyaluronic Acid: Smooths wrinkles like magic</p>",
-            "icon_2": "shopify://shop_images/magic-wand_1586935.svg",
-            "heading_3": "<p>Ceramosides™: Proven 21% hydration boost</p>",
-            "icon_3": "shopify://shop_images/water-level_7495423.svg",
-            "heading_4": "<p><strong>“NutraDew™ is a hydration game-changer!\" – Dr. Anika Sharma, Dermatologist</strong></p>",
-            "heading_5": "",
-            "heading_6": "",
-            "small_heading": "",
-            "feature_heading": "Why Dermatologists Rave About NutraDew™",
-            "description": "",
-            "feature_btn_link": "",
-            "feature_btn_text": "Get a Quote Today",
-            "custom_class_feature": ""
-          }
-        }
-      },
-      "block_order": [
-        "feature_69LMkH"
-      ],
-      "disabled": true,
-      "name": "Features",
-      "settings": {
-        "custom_class": "Dermatologists",
-        "background_color": "#ffffff",
-        "heading": "",
-        "heading_margin_top": 20,
-        "heading_margin_bottom": 20,
-        "heading_alignment": "center",
-        "load_css_section": "",
-        "top_padding": 80,
-        "bottom_padding": 80,
-        "left_padding": 20,
-        "right_padding": 20,
-        "feature_description_margin_top": 0,
-        "padding_top_mobile": 40,
-        "padding_bottom_mobile": 40
-      }
-    },
     "pdp_accordian_Rhg4j3": {
       "type": "pdp-accordian",
       "blocks": {
@@ -1629,6 +1574,33 @@
         "muted": true
       }
     },
+    "apps_qjxtJd": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_4dFTRw": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_4dFTRw"
+      ],
+      "settings": {}
+    },
     "find_us_on_hiPNKE": {
       "type": "find-us-on",
       "disabled": true,
@@ -1666,10 +1638,10 @@
     "section_modern_lifestyle_MrE3Ly",
     "section_dual_highlight_k3PwJa",
     "faq_nutradrew_jXHrUe",
-    "features_YgLMPq",
     "pdp_accordian_Rhg4j3",
     "recommeded_ykMUDg",
     "our_reels_edT86D",
+    "apps_qjxtJd",
     "find_us_on_hiPNKE"
   ]
 }
