@@ -1,4 +1,4 @@
-{%- render 'cart-drawer' -%}
+{%- render 'cart-drawer', section: section -%}
 
 {% schema %}
 {
@@ -37,7 +37,8 @@
     {
       "type": "url",
       "id": "button_url",
-      "label": "t:sections.global.element.button.link.label"
+      "label": "t:sections.global.element.button.link.label",
+      "default": "/collections/all"
     }
   ],
   "blocks": [

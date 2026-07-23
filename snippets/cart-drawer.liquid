@@ -60,14 +60,17 @@
               assign cd_empty_title = "cart.empty_title_html" | t
               assign cd_empty_sub = "cart.empty_subtitle" | t
               assign cd_empty_btn = "cart.empty_button_label" | t
+              assign cd_btn_url = section.settings.button_url
+              if cd_btn_url == blank or cd_btn_url contains 'shopify://'
+                assign cd_btn_url = routes.all_products_collection_url
+              endif
             -%}
             <div class="cart-drawer__empty">
               <h2 class="cart-drawer__empty-text">{{- cd_empty_title -}}</h2>
               <span class="cart-drawer__empty-desc">{{ cd_empty_sub }}</span>
-              {%- liquid
-                assign cd_btn_url = section.settings.button_url | default: '/collections/skin'
-                render 'button', type: 'link', href: cd_btn_url, value: cd_empty_btn, style: 'solid', fullwidth: false, class: 'button', button_style: 'button--outlined'
-              -%}
+              <a href="{{ cd_btn_url }}" class="button button--outlined" style="cursor: pointer !important;">
+                {{- cd_empty_btn -}}
+              </a>
             </div>
           {%- else -%}
             <div class="cart-drawer__main">
@@ -118,10 +121,10 @@
                           </summary>
                           <div class="accordion__body">
                             <div class="accordion__body-inner">
-                              <form class="cart-drawer__discount-form" id="CartDrawer-DiscountForm" onsubmit="return false;">
+                              <div class="cart-drawer__discount-form" id="CartDrawer-DiscountForm">
                                 <div class="field"><input type="text" id="CartDrawer-DiscountCode" name="discount" class="field__input" placeholder="{{ 'cart.discount_code' | t }}" aria-label="{{ 'cart.discount_code' | t }}"></div>
                                 <button type="button" class="button cart-drawer__discount-apply" name="apply">{{- 'cart.apply' | t -}}</button>
-                              </form>
+                              </div>
                               <div class="cart-drawer__discount-message" role="status" aria-live="polite"></div>
                             </div>
                           </div>
@@ -143,9 +146,15 @@
                         {%- liquid
                           assign view_cart_text = 'cart.view_cart' | t
                           assign checkout_text = 'cart.checkout' | t
-                          render 'button', type: 'link', button_style: 'button--outlined', value: view_cart_text, href: routes.cart_url, fullwidth: true, class: 'button'
-                          render 'button', type: 'submit', name: 'checkout', value: checkout_text, style: 'solid', fullwidth: true, class: 'button'
                         -%}
+                        <a 
+                          href="{{ routes.cart_url }}" 
+                          onclick="window.location.href='{{ routes.cart_url }}';" 
+                          class="cart-drawer__btn-view-cart button" 
+                          role="button">
+                          {{ view_cart_text }}
+                        </a>
+                        {%- render 'button', type: 'submit', name: 'checkout', value: checkout_text, style: 'solid', fullwidth: true, class: 'button' -%}
                       </div>
                     </div>
                   </div>

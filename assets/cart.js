@@ -305,7 +305,7 @@ class DiscountCodeHandler {
       if (applyButton) {
         event.preventDefault();
         event.stopPropagation();
-        const form = applyButton.closest('form');
+        const form = applyButton.closest('form, .cart-drawer__discount-form, .cart__discount-form');
         if (form) {
           this.applyDiscountCode(form);
         }
@@ -318,7 +318,7 @@ class DiscountCodeHandler {
         const input = event.target;
         if (input && input.name === 'discount' && input.closest('#Cart-DiscountForm, #CartDrawer-DiscountForm')) {
           event.preventDefault();
-          const form = input.closest('form');
+          const form = input.closest('form, .cart-drawer__discount-form, .cart__discount-form');
           if (form) {
             this.applyDiscountCode(form);
           }
