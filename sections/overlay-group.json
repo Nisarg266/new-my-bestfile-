@@ -15,7 +15,7 @@
       "type": "cart-drawer",
       "settings": {
         "card_media_aspect_ratio": "3/4",
-        "button_url": "shopify://collections/all"
+        "button_url": "shopify://collections/collection"
       }
     },
     "quick-cart-drawer": {
