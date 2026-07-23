@@ -108,17 +108,18 @@
 
     .highlight-container {
       display: flex;
-      gap: 30px;
+      gap: 24px;
       justify-content: center;
       flex-wrap: wrap;
-      padding: 0 16px;
+      padding: 0 20px;
     }
 
     .product-highlight-card {
       display: flex;
       flex-direction: column;
       position: relative;
-      flex: 1 1 calc(50% - 20px);
+      flex: 1 1 calc(50% - 16px);
+      max-width: 600px;
       border-radius: 16px;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -156,10 +157,10 @@
     /* BEST SELLER Tag Styling & Flashing Animation */
     .product-card-tag {
       position: absolute;
-      top: 14px;
-      left: 14px;
-      padding: 7px 14px;
-      font-size: 13px;
+      top: 12px;
+      left: 12px;
+      padding: 6px 12px;
+      font-size: 12px;
       font-weight: 800;
       border-radius: 6px;
       z-index: 5;
@@ -188,7 +189,7 @@
       padding: 16px 20px 20px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
       align-items: stretch;
       background: #ffffff;
       margin-top: auto;
@@ -203,21 +204,23 @@
     }
 
     .product-highlight-price {
-      font-size: 2.5rem;
+      font-size: 1.5rem;
       font-weight: 800;
       color: #000000;
+      line-height: 1.2;
+      white-space: nowrap;
     }
 
     .product-highlight-compare-price {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: 400;
       color: #777777;
       text-decoration: line-through;
+      white-space: nowrap;
     }
 
     .product-highlight-atc-form {
       width: 100%;
-      margin-top: 2px;
     }
 
     .product-highlight-atc-btn {
@@ -225,7 +228,7 @@
       background-color: #000000;
       color: #ffffff;
       border: none;
-      padding: 12px 24px;
+      padding: 12px 20px;
       font-size: 15px;
       font-weight: 700;
       letter-spacing: 0.5px;
@@ -237,6 +240,7 @@
       justify-content: center;
       text-transform: uppercase;
       text-decoration: none;
+      white-space: nowrap;
     }
 
     .product-highlight-atc-btn:hover:not([disabled]) {
@@ -251,13 +255,37 @@
       opacity: 0.7;
     }
 
-    @media (max-width: 1000px) {
+    /* Mobile Responsive Optimizations */
+    @media (max-width: 768px) {
       .highlight-container {
-        padding: 16px;
+        padding: 0 16px !important;
+        gap: 20px;
       }
+
       .product-highlight-card {
         flex: 1 1 100%;
         max-width: 100%;
+      }
+
+      .product-highlight-footer {
+        padding: 14px 16px 16px;
+        gap: 10px;
+      }
+
+      .product-highlight-price {
+        font-size: 2.0rem;
+      }
+
+      .product-card-tag {
+        top: 10px;
+        left: 10px;
+        padding: 5px 10px;
+        font-size: 11px;
+      }
+
+      .product-highlight-atc-btn {
+        padding: 12px 16px;
+        font-size: 14px;
       }
     }
   </style>
