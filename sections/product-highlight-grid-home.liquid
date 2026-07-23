@@ -111,7 +111,7 @@
       gap: 24px;
       justify-content: center;
       flex-wrap: wrap;
-      padding: 0 20px;
+      padding: 10px 20px;
     }
 
     .product-highlight-card {
@@ -124,7 +124,8 @@
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       background: #ffffff;
-      overflow: hidden;
+      overflow: visible;
+      margin-top: 10px;
     }
 
     .product-highlight-card:hover {
@@ -154,20 +155,20 @@
       transform: scale(1.02);
     }
 
-    /* BEST SELLER Tag Styling & Flashing Animation */
+    /* BEST SELLER Tag Styling & Flashing Animation - Top Overlapping Design */
     .product-card-tag {
       position: absolute;
-      top: 12px;
-      left: 12px;
+      top: -10px;
+      left: 14px;
       padding: 6px 12px;
       font-size: 12px;
       font-weight: 800;
-      border-radius: 6px;
-      z-index: 5;
+      border-radius: 5px;
+      z-index: 10;
       text-transform: uppercase;
       line-height: 1;
       letter-spacing: 0.5px;
-      box-shadow: 0 4px 12px rgba(230, 0, 0, 0.4);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
       animation: seller-flash 1.4s infinite ease-in-out;
     }
 
@@ -175,12 +176,12 @@
       0%, 100% {
         opacity: 1;
         transform: scale(1);
-        box-shadow: 0 0 8px rgba(230, 0, 0, 0.7);
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
       }
       50% {
-        opacity: 0.5;
-        transform: scale(1.06);
-        box-shadow: 0 0 18px rgba(230, 0, 0, 0.95);
+        opacity: 0.6;
+        transform: scale(1.05);
+        box-shadow: 0 0 14px rgba(0, 0, 0, 0.5);
       }
     }
 
@@ -193,6 +194,8 @@
       align-items: stretch;
       background: #ffffff;
       margin-top: auto;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
     }
 
     .product-highlight-price-wrapper {
@@ -204,7 +207,7 @@
     }
 
     .product-highlight-price {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       font-weight: 800;
       color: #000000;
       line-height: 1.2;
@@ -258,13 +261,14 @@
     /* Mobile Responsive Optimizations */
     @media (max-width: 768px) {
       .highlight-container {
-        padding: 0 16px !important;
-        gap: 20px;
+        padding: 10px 16px !important;
+        gap: 24px;
       }
 
       .product-highlight-card {
         flex: 1 1 100%;
         max-width: 100%;
+        margin-top: 10px;
       }
 
       .product-highlight-footer {
@@ -273,11 +277,11 @@
       }
 
       .product-highlight-price {
-        font-size: 2.0rem;
+        font-size: 1.4rem;
       }
 
       .product-card-tag {
-        top: 10px;
+        top: -10px;
         left: 10px;
         padding: 5px 10px;
         font-size: 11px;
