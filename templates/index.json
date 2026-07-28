@@ -15,8 +15,8 @@
         "slide_ry6Gzd": {
           "type": "slide",
           "settings": {
-            "background_image_desktop": "shopify://shop_images/Home_Web_Banner_1_copy_2_1.jpg",
-            "background_image_mobile": "shopify://shop_images/Home.jpg",
+            "background_image_desktop": "shopify://shop_images/Home_Web_Banner_New_1.jpg",
+            "background_image_mobile": "shopify://shop_images/Home_Mobile_Banner_New_1.jpg",
             "main_heading": "",
             "subheading": "",
             "button_text": "",
@@ -27,8 +27,8 @@
           "type": "slide",
           "disabled": true,
           "settings": {
-            "background_image_desktop": "shopify://shop_images/Home_Web_Banner_1_1.png",
-            "background_image_mobile": "shopify://shop_images/Home_Mobile_Banner_1_e3583911-3942-426f-9c67-11a7e051f72b.jpg",
+            "background_image_desktop": "shopify://shop_images/Home_Web_Banner_New_2.jpg",
+            "background_image_mobile": "shopify://shop_images/Home_Mobile_Banner_New_2.jpg",
             "main_heading": "",
             "subheading": "",
             "button_text": "",
@@ -183,7 +183,9 @@
             "card_link": "shopify://products/melt-n-glo",
             "card_tag": "BEST SELLER",
             "tag_bg_color": "#e60000",
-            "tag_text_color": "#ffffff"
+            "tag_text_color": "#ffffff",
+            "custom_price": "",
+            "button_label": "Add To Cart"
           }
         },
         "product_DBWmq6": {
@@ -194,7 +196,9 @@
             "card_link": "shopify://products/nutradew",
             "card_tag": "",
             "tag_bg_color": "#ffffff",
-            "tag_text_color": "#ffffff"
+            "tag_text_color": "#ffffff",
+            "custom_price": "",
+            "button_label": "Add To Cart"
           }
         }
       },
@@ -203,7 +207,7 @@
         "product_DBWmq6"
       ],
       "custom_css": [
-        "@media (min-width: 1024px) { .highlight-container { padding: 20px 40px; } }"
+        "@media (min-width: 1024px) {.highlight-container {padding: 20px 40px; }}"
       ],
       "settings": {
         "background_color": "#ffffff",
