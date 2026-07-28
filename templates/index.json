@@ -148,6 +148,7 @@
     },
     "herosection1_A6eCPY": {
       "type": "herosection1",
+      "disabled": true,
       "custom_css": [
         "@media (min-width: 768px) and (max-width: 1024px) {.my-best-life-right img {padding: 0 0 0 160px; width: 600px; height: 774px; max-width: max-content; }}"
       ],
