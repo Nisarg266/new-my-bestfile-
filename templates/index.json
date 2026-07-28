@@ -25,7 +25,6 @@
         },
         "slide_DH8VXL": {
           "type": "slide",
-          "disabled": true,
           "settings": {
             "background_image_desktop": "shopify://shop_images/Home_Web_Banner_New_2.jpg",
             "background_image_mobile": "shopify://shop_images/Home_Mobile_Banner_New_2.jpg",
@@ -48,6 +47,7 @@
         },
         "slide_dxiXXQ": {
           "type": "slide",
+          "disabled": true,
           "settings": {
             "background_image_desktop": "shopify://shop_images/Home_Web_Banner_3_73a8ee69-fa59-409d-baa8-1b178a3228a1.png",
             "background_image_mobile": "shopify://shop_images/Home_Mobile_Banner_3_3ba63039-4bb5-46a2-aa1d-e29bb5a0a107.jpg",
