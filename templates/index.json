@@ -34,23 +34,22 @@
             "button_link": "shopify://collections/collection"
           }
         },
-        "slide_6Cmem7": {
+        "slide_dxiXXQ": {
           "type": "slide",
           "settings": {
-            "background_image_desktop": "shopify://shop_images/Home_Web_Banner_New_4.jpg",
-            "background_image_mobile": "shopify://shop_images/Home_Mobile_Banner_New_4.jpg",
+            "background_image_desktop": "shopify://shop_images/Home_Web_Banner_New_3.jpg",
+            "background_image_mobile": "shopify://shop_images/Home_Mobile_Banner_New_3.jpg",
             "main_heading": "",
             "subheading": "",
             "button_text": "",
             "button_link": "shopify://collections/collection"
           }
         },
-        "slide_dxiXXQ": {
+        "slide_6Cmem7": {
           "type": "slide",
-          "disabled": true,
           "settings": {
-            "background_image_desktop": "shopify://shop_images/Home_Web_Banner_3_73a8ee69-fa59-409d-baa8-1b178a3228a1.png",
-            "background_image_mobile": "shopify://shop_images/Home_Mobile_Banner_3_3ba63039-4bb5-46a2-aa1d-e29bb5a0a107.jpg",
+            "background_image_desktop": "shopify://shop_images/Home_Web_Banner_New_4.jpg",
+            "background_image_mobile": "shopify://shop_images/Home_Mobile_Banner_New_4.jpg",
             "main_heading": "",
             "subheading": "",
             "button_text": "",
@@ -97,8 +96,8 @@
       "block_order": [
         "slide_ry6Gzd",
         "slide_DH8VXL",
-        "slide_6Cmem7",
         "slide_dxiXXQ",
+        "slide_6Cmem7",
         "slide_DR4XYF",
         "slide_RDryDM",
         "slide_djyw7j"
