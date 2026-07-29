@@ -1,4 +1,4 @@
-/* SCRAFT BASE Theme - v1.0.9 */
+/* Horizon Theme - v4.1.3 */
 
 /* Define Breakpoints -- START */
 const mobileWidth = 750;
